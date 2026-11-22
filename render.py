@@ -114,8 +114,7 @@ GEO = None
 
 
 def real_map(box, lat0, lat1, lon0, lon1, graticule=2):
-    """Paste a correctly projected crop of world110.geojson into box.
-    Returns (lat, lon) -> page-space (x, y)."""
+    """Paste a correctly projected crop of world110.geojson into box."""
     global GEO, PAGE
     x0, y0, x1, y1 = box
     w, h = max(2, int(x1 - x0)), max(2, int(y1 - y0))
@@ -167,47 +166,21 @@ def mix(a, b, t):
     return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
 
 
-def detail_figure(d, x, y, h, coat, skin="#C99564", helmet=None, bag=None):
-    """A small but anatomical figure: head, hair, face, coat, belt, limbs."""
+def detail_figure(d, x, y, h, coat, skin="#C99564", helmet=None):
     w = h * 0.42
-    d.ellipse([x - w / 2, y - h, x + w / 2, y - h + w], fill=rgb(skin),
-              outline="#7A5538", width=1)
-    d.pieslice([x - w / 2, y - h - w * 0.1, x + w / 2, y - h + w * 0.6],
-               180, 360, fill="#3A2A1E")
+    d.ellipse([x - w / 2, y - h, x + w / 2, y - h + w], fill=rgb(skin))
     if helmet:
         d.ellipse([x - w * 0.6, y - h - w * 0.2, x + w * 0.6, y - h + w * 0.45],
-                  fill=rgb(helmet), outline="#5A4A20", width=1)
-    ex = w * 0.16
-    d.ellipse([x - w * 0.30, y - h + w * 0.42, x - w * 0.30 + 1.4,
-               y - h + w * 0.42 + 1.4], fill="#1A1A1A")
-    d.ellipse([x + w * 0.16, y - h + w * 0.42, x + w * 0.16 + 1.4,
-               y - h + w * 0.42 + 1.4], fill="#1A1A1A")
-    d.arc([x - w * 0.2, y - h + w * 0.45, x + w * 0.2, y - h + w * 0.85],
-          15, 165, fill="#8A5A3A", width=1)
-    d.polygon([(x - w * 0.22, y - h + w * 0.95), (x, y - h + w * 1.3),
-               (x + w * 0.22, y - h + w * 0.95)], fill=mix(coat, "#FFFFFF", 0.35))
-    d.rectangle([x - w * 0.45, y - h + w * 1.25, x + w * 0.45, y - h * 0.30],
-                fill=rgb(coat), outline="#2E2E2E", width=1)
-    d.rectangle([x - w * 0.45, y - h * 0.42, x + w * 0.45, y - h * 0.34], fill="#4A3A28")
-    d.rectangle([x - w * 0.08, y - h + w * 1.3, x + w * 0.08, y - h * 0.36],
-                fill=mix(coat, "#FFFFFF", 0.25))
-    d.line([x - w * 0.45, y - h * 0.88, x - w * 0.72, y - h * 0.38],
-           fill=rgb(coat), width=max(2, int(h * 0.13)))
-    d.line([x + w * 0.45, y - h * 0.88, x + w * 0.72, y - h * 0.38],
-           fill=rgb(coat), width=max(2, int(h * 0.13)))
-    d.ellipse([x - w * 0.80, y - h * 0.42, x - w * 0.60, y - h * 0.28],
-              fill=rgb(skin))
-    d.ellipse([x + w * 0.60, y - h * 0.42, x + w * 0.80, y - h * 0.28],
-              fill=rgb(skin))
-    d.line([x - w * 0.16, y - h * 0.30, x - w * 0.24, y], fill="#27313E",
-           width=max(2, int(h * 0.10)))
-    d.line([x + w * 0.16, y - h * 0.30, x + w * 0.24, y], fill="#27313E",
-           width=max(2, int(h * 0.10)))
-    d.rectangle([x - w * 0.34, y - 2, x - w * 0.14, y], fill="#1A1A1A")
-    d.rectangle([x + w * 0.14, y - 2, x + w * 0.34, y], fill="#1A1A1A")
-    if bag:
-        d.rectangle([x - w * 0.85, y - h * 0.72, x - w * 0.40, y - h * 0.28],
-                    fill=rgb(bag), outline="#3A3020", width=1)
+                  fill=rgb(helmet))
+    d.rectangle([x - w * 0.42, y - h + w, x + w * 0.42, y - h * 0.28], fill=rgb(coat))
+    d.line([x - w * 0.42, y - h * 0.8, x - w * 0.7, y - h * 0.35],
+           fill=rgb(coat), width=max(2, int(h * 0.12)))
+    d.line([x + w * 0.42, y - h * 0.8, x + w * 0.7, y - h * 0.35],
+           fill=rgb(coat), width=max(2, int(h * 0.12)))
+    d.line([x - w * 0.16, y - h * 0.28, x - w * 0.22, y], fill="#27313E",
+           width=max(2, int(h * 0.1)))
+    d.line([x + w * 0.16, y - h * 0.28, x + w * 0.22, y], fill="#27313E",
+           width=max(2, int(h * 0.1)))
 
 
 def ship_icon(d, x, y, sc, color="#AAB7C1"):
@@ -218,33 +191,22 @@ def ship_icon(d, x, y, sc, color="#AAB7C1"):
                 fill="#D5DEE5", outline="#6C7A86")
     d.rectangle([x - 0.2 * sc, y - 0.95 * sc, x + 0.12 * sc, y - 0.55 * sc],
                 fill="#93A2AD")
-    for i in range(3):
-        d.rectangle([x - 1.1 * sc + i * 0.62 * sc, y + 0.06 * sc,
-                     x - 0.70 * sc + i * 0.62 * sc, y + 0.38 * sc], fill="#A8703C")
-    d.line([x - 1.7 * sc, y + 0.75 * sc, x + 1.7 * sc, y + 0.75 * sc],
-           fill="#9FB8C8", width=1)
 
 
 def burst(d, x, y, r, color="#E26B1D"):
-    for a in range(10):
-        ang = 2 * math.pi * a / 10
+    for a in range(8):
+        ang = 2 * math.pi * a / 8
         d.line([x, y, x + r * math.cos(ang), y + r * math.sin(ang)],
                fill=rgb(color), width=2)
     d.ellipse([x - r * 0.35, y - r * 0.35, x + r * 0.35, y + r * 0.35],
               fill="#F2C14E")
 
 
-def tag(d, x, y, text, fill="#181818", fsize=8, anchor="la"):
-    """A solid red/black badge block with white text for illustration labels."""
+def tag(d, x, y, text, fill="#181818", fsize=8):
+    """One compact location badge per illustration, top-left."""
     f = font(fsize, True)
     w = d.textlength(text, font=f)
-    h = fsize + 6
-    if anchor == "mm":
-        x -= w / 2
-        y -= h / 2
-    elif anchor == "rm":
-        x -= w
-    d.rounded_rectangle([x - 4, y - 2, x + w + 4, y + h - 2],
+    d.rounded_rectangle([x - 4, y - 2, x + w + 4, y + fsize + 5],
                         radius=2, fill=rgb(fill))
     put(d, (x, y), text, f, "#FFFFFF")
 
@@ -277,214 +239,145 @@ def scene(d, box, s):
             bx((0, i / steps), (1, (i + 1) / steps),
                fill=mix(top, bottom, i / (steps - 1)))
 
-    def puff(fx, fy, r, fill):
-        for ox, oy, sc in ((-0.8, 0.15, 0.6), (-0.35, -0.25, 0.85),
-                           (0.2, -0.1, 0.9), (0.7, 0.2, 0.65)):
-            el((fx + ox * r - sc * r, fy + oy * r - sc * r),
-               (fx + ox * r + sc * r, fy + oy * r + sc * r), fill=fill)
-
     if k == "cop":
-        grad("#26354A", "#3E5069")
-        tag(d, x0 + 5, y0 + 5, "ANTALYA, TÜRKIYE", "#181818", 7)
-        dx0, dy0, dx1, dy1 = x0 + 34, y0 + 24, x1 - 34, y1 - 8
-        d.rectangle([dx0, dy0, dx1, dy1], fill="#FFFDF5",
-                    outline=rgb(LINE), width=1)
-        put(d, ((dx0 + dx1) / 2, dy0 + 8), "COP31",
-            font(12, True, True), INK, anchor="mm")
-        put(d, ((dx0 + dx1) / 2, dy0 + 28), "DRAFT 3",
-            font(16, True, True), INK, anchor="mm")
-        d.rectangle([dx0 + 8, dy0 + 44, dx1 - 8, dy0 + 66], fill=rgb(RED))
-        put(d, ((dx0 + dx1) / 2, dy0 + 49), "REJECTED",
-            font(13, True), "#FFFFFF", anchor="mm")
+        grad("#22334A", "#43536B")
+        bx((0.05, 0.60), (0.95, 0.74), fill="#7A6146")
+        coats = ["#3E5A7A", "#7A4A4A", "#4C6B57", "#6A5A3E", "#3E5A7A", "#7A4A4A"]
+        for i, fx in enumerate((0.10, 0.22, 0.34, 0.46, 0.58, 0.70)):
+            el((fx, 0.34), (fx + 0.06, 0.42), fill="#C99564")
+            poly([(fx + 0.01, 0.42), (fx + 0.05, 0.42), (fx + 0.08, 0.60),
+                  (fx - 0.02, 0.60)], fill=coats[i])
+        bx((0.76, 0.12), (0.96, 0.56), fill="#FFFDF5", outline=rgb(LINE))
+        for j in range(4):
+            ln((0.79, 0.20 + j * 0.07), (0.93, 0.20 + j * 0.07), "#9B9B9B", 1)
+        bx((0.76, 0.42), (0.96, 0.56), fill=rgb(RED))
+        put(d, P(0.86, 0.45), "NO DEAL", font(7, True), "#FFFFFF", anchor="mm")
 
     elif k == "hormuz":
-        pj = real_map(box, 23, 29.5, 49, 61, 1)
-        for latv, lonv in ((25.8, 55.0), (26.5, 56.2), (27.1, 57.4)):
-            sx, sy = pj(latv, lonv)
-            ship_icon(d, sx, sy, 2.2)
-            burst(d, sx + 4, sy - 9, 4.5)
-        tag(d, x0 + 5, y0 + 5, "STRAIT OF HORMUZ", "#181818", 7)
-        tag(d, *P(0.36, 0.03), "IRAN STRIKES 3 TANKERS", "#181818", 7)
-        tag(d, *P(0.74, 0.03), "RPT 22 NOV", "#181818", 7)
-        tag(d, *P(0.68, 0.72), "US BLOCKADE: ACT OF WAR", RED, 7)
+        grad("#1E3046", "#5C7185")
+        for yy in (0.42, 0.56, 0.70):
+            ln((0.02, yy), (0.98, yy), "#3E5E78", 1)
+        for fx in (0.18, 0.46, 0.70):
+            px, py = P(fx, 0.50)
+            ship_icon(d, px, py, 10)
+            ax, ay = P(fx + 0.04, 0.40)
+            burst(d, ax, ay, 4)
+        poly([(0, 0), (0.14, 0), (0.09, 0.30), (0, 0.40)], fill="#C9B98F")
+        poly([(0.88, 0.70), (1, 0.58), (1, 1), (0.82, 1)], fill="#C9B98F")
 
     elif k == "dymer":
-        grad("#46566A", "#A6ADAD")
-        puff(0.80, 0.20, 0.20, "#B6BCBC")
-        ln((0, 0.83), (1, 0.83), "#6D6759", 2)
-        bx((0.06, 0.20), (0.46, 0.83), fill="#5E6876", outline="#343C48")
-        for fx in (0.09, 0.18, 0.27, 0.36):
-            ln((fx, 0.20), (fx, 0.83), "#4A5361", 1)
-        for yy in (0.29, 0.42, 0.55, 0.68):
-            ln((0.06, yy), (0.46, yy), "#4A5361", 1)
-            for xx in (0.10, 0.20, 0.30, 0.39):
-                bx((xx, yy + 0.02), (xx + 0.055, yy + 0.075), fill="#E4D49A")
-        poly([(0.46, 0.44), (0.66, 0.58), (0.56, 0.83), (0.42, 0.83)], fill="#817B70")
-        for i in range(9):
-            fx = 0.40 + (i % 5) * 0.07
-            fy = 0.70 + (i // 5) * 0.06
-            bx((fx, fy), (fx + 0.05, fy + 0.045), fill="#8E887E", outline="#625D55")
-        poly([(0, 0.83), (0.24, 0.69), (0.62, 0.83)], fill="#8B8579")
-        puff(0.52, 0.54, 0.10, "#BCBAB4")
-        for fx in (0.51, 0.71, 0.83):
-            detail_figure(d, P(fx, 0.83)[0], P(fx, 0.83)[1], 0.46,
-                          "#D9A23B", helmet="#F2C14E", bag="#8B5E34")
-        bx((0.88, 0.68), (1.0, 0.82), fill="#7C3030", outline="#3E2020")
-        el((0.91, 0.66), (0.95, 0.70), fill="#F2C14E")
-        tag(d, *P(0.03, 0.03), "03:00 LOCAL", "#181818", 8)
-        tag(d, *P(0.03, 0.22), "RUSSIAN DRONE", RED, 7)
-        bx((0.66, 0.03), (0.99, 0.18), fill=rgb(RED))
-        put(d, P(0.825, 0.105), "14 MISSING", font(8, True), "#FFFFFF", anchor="mm")
+        grad("#44566B", "#A6ADAD")
+        ln((0, 0.84), (1, 0.84), "#6D6759", 2)
+        bx((0.10, 0.28), (0.52, 0.84), fill="#5E6876", outline="#343C48")
+        for yy in (0.38, 0.52, 0.66):
+            ln((0.10, yy), (0.52, yy), "#4A5361", 1)
+            for xx in (0.14, 0.26, 0.38):
+                bx((xx, yy + 0.02), (xx + 0.05, yy + 0.06), fill="#E4D49A")
+        poly([(0.52, 0.48), (0.70, 0.60), (0.60, 0.84), (0.48, 0.84)], fill="#817B70")
+        poly([(0, 0.84), (0.30, 0.70), (0.62, 0.84)], fill="#8B8579")
+        for fx in (0.62, 0.78):
+            px, py = P(fx, 0.84)
+            detail_figure(d, px, py, 38, "#D9A23B", helmet="#F2C14E")
 
     elif k == "shipdrone":
-        pj = real_map(box, 58, 62, 21, 31, 1)
-        sx, sy = pj(59.8, 26.5)
-        ship_icon(d, sx, sy, 1.7)
-        burst(d, sx + 3, sy - 6, 4.5)
-        tag(d, x0 + 5, y0 + 5, "07:26 GMT", "#181818", 8)
-        tag(d, x0 + 70, y0 + 5, "SHIP DAMAGED", RED, 7)
-        tag(d, sx - 4, sy - 26, "DRONE HITS RUSSIAN SHIP", RED, 7)
-        cx, cy = pj(60.3, 28.5)
-        for ox, oy in ((-5, -3), (5, -3), (-5, 3), (5, 3)):
-            d.ellipse([cx + ox - 2, cy + oy - 1.5, cx + ox + 2, cy + oy + 1.5],
-                      fill="#4A5864")
-        d.line([cx - 5, cy - 3, cx + 5, cy + 3], fill="#4A5864", width=1)
-        d.line([cx + 5, cy - 3, cx - 5, cy + 3], fill="#4A5864", width=1)
-        d.line([cx, cy + 3, sx, sy], fill=rgb(RED), width=1)
+        grad("#1B2C42", "#3D5A72")
+        for yy in (0.52, 0.64, 0.76, 0.88):
+            ln((0.02, yy), (0.98, yy), "#4E6E88", 1)
+        px, py = P(0.38, 0.68)
+        ship_icon(d, px, py, 15)
+        ax, ay = P(0.46, 0.44)
+        burst(d, ax, ay, 5)
+        cx, cy = P(0.80, 0.28)
+        for ox, oy in ((-9, -5), (9, -5), (-9, 5), (9, 5)):
+            el((cx + ox - 3, cy + oy - 2), (cx + ox + 3, cy + oy + 2), fill="#D5DEE5")
+        d.line([cx - 9, cy - 5, cx + 9, cy + 5], fill="#D5DEE5", width=1)
+        d.line([cx + 9, cy - 5, cx - 9, cy + 5], fill="#D5DEE5", width=1)
 
     elif k == "poland":
-        pj = real_map(box, 48, 56, 10, 28, 2)
-        for latv, lonv in ((52.23, 21.01), (51.70, 22.80)):
-            sx, sy = pj(latv, lonv)
-            burst(d, sx, sy, 5)
-        gx, gy = pj(52.0, 14.5)
-        put(d, (gx, gy), "GERMANY", font(6, True), MUTED)
-        ux, uy = pj(50.5, 25.0)
-        put(d, (ux, uy), "UKRAINE", font(6, True), MUTED)
-        bx0, by0 = pj(53.5, 25.0)
-        put(d, (bx0, by0), "BELARUS", font(6, True), MUTED)
-        tag(d, x0 + 5, y0 + 4, "NATO", "#181818", 8)
-        tag(d, x0 + 48, y0 + 4, "22 NOV", "#181818", 8)
-        tag(d, x0 + 5, y0 + 20, "POLAND", "#181818", 7)
-        tag(d, x1 - 110, y0 + 4, "RUSSIAN MISSILE + DRONE", RED, 7)
+        grad("#DCE7EC", "#F2ECDD")
+        pts = [(0.24, 0.28), (0.38, 0.20), (0.54, 0.18), (0.68, 0.24),
+               (0.76, 0.36), (0.72, 0.52), (0.60, 0.62), (0.50, 0.76),
+               (0.38, 0.68), (0.28, 0.56), (0.20, 0.42)]
+        poly(pts, fill=rgb(LAND), outline=rgb(COAST))
+        for fx, fy in ((0.44, 0.40), (0.62, 0.52)):
+            ax, ay = P(fx, fy)
+            burst(d, ax, ay, 5)
 
     elif k == "westbank":
-        pj = real_map(box, 30, 34, 30, 39, 1)
-        fx, fy = x0 + 4, y0 + 4
-        d.rectangle([fx, fy, fx + 18, fy + 12], fill="#FFFFFF", outline="#9B9B9B")
-        d.rectangle([fx, fy, fx + 18, fy + 4], fill="#111111")
-        d.rectangle([fx, fy + 8, fx + 18, fy + 12], fill="#007A3D")
-        d.polygon([(fx, fy), (fx + 8, fy + 6), (fx, fy + 12)], fill="#CE1126")
-        for latv, lonv in ((32.10, 35.20), (32.00, 35.32), (31.90, 35.15), (32.20, 35.40)):
-            vx, vy = pj(latv, lonv)
-            d.ellipse([vx - 2, vy - 2, vx + 2, vy + 2], fill=rgb(RED),
-                      outline="#FFFFFF", width=1)
-            burst(d, vx + 3, vy - 4, 3)
-        tag(d, *P(0.02, 0.03), "OVERNIGHT", "#181818", 7)
-        tag(d, *P(0.30, 0.10), "SETTLERS ATTACK 4 VILLAGES", "#181818", 7)
+        grad("#33455A", "#7B7C72")
+        poly([(0, 0.76), (0.30, 0.62), (0.62, 0.72), (1, 0.60), (1, 1), (0, 1)],
+             fill="#6F7455")
+        for i, fx in enumerate((0.30, 0.46, 0.62, 0.78)):
+            bx((fx, 0.50), (fx + 0.11, 0.74), fill="#E4D8BC", outline="#8A7550")
+            poly([(fx - 0.01, 0.50), (fx + 0.055, 0.40), (fx + 0.12, 0.50)], fill="#A66B3F")
+            if i in (1, 3):
+                poly([(fx + 0.03, 0.42), (fx + 0.055, 0.30), (fx + 0.09, 0.42)],
+                     fill="#E26B1D")
 
     elif k == "benghazi":
-        pj = real_map(box, 30, 34, 15, 25, 2)
-        sx, sy = pj(32.12, 20.07)
-        ship_icon(d, sx, sy, 1.9)
-        burst(d, sx + 3, sy - 8, 6)
-        d.line([sx, sy + 5, sx + 22, sy + 5], fill="#6D6759", width=2)
-        d.line([sx + 19, sy - 14, sx + 19, sy + 5], fill="#8A95A0", width=2)
-        d.line([sx + 19, sy - 14, sx + 6, sy - 14], fill="#8A95A0", width=2)
-        tag(d, x0 + 5, y0 + 4, "15:50 GMT", "#181818", 8)
-        tag(d, x0 + 66, y0 + 4, "DRONE BLAST", RED, 7)
-        tag(d, x0 + 5, y0 + 30, "BENGHAZI, LIBYA", "#181818", 7)
-        tag(d, x0 + 5, y0 + 16, "RUSSIAN SHIP HIT", RED, 7)
+        grad("#2B3A4C", "#8A8A82")
+        ln((0, 0.74), (1, 0.74), "#7C7568", 2)
+        px, py = P(0.42, 0.70)
+        ship_icon(d, px, py, 3.2)
+        ax, ay = P(0.50, 0.46)
+        burst(d, ax, ay, 7)
+        bx((0.80, 0.24), (0.84, 0.64), fill="#8A95A0")
+        ln((0.82, 0.26), (0.64, 0.26), "#8A95A0", 2)
 
     elif k == "ice":
         grad("#DCE5EC", "#F3EFE3")
-        d.rounded_rectangle([P(0.60, 0.22), P(1.02, 0.78)], radius=9,
+        d.rounded_rectangle([P(0.62, 0.24), P(1.02, 0.78)], radius=9,
                             fill="#D2DCE4", outline="#8493A0")
-        for wx in (0.68, 0.76, 0.84, 0.92):
-            bx((wx, 0.30), (wx + 0.035, 0.35), fill="#9AA9B5")
-        bx((0.12, 0.36), (0.70, 0.58), fill="#BCC9C0", outline="#6F7F75")
-        bx((0.14, 0.58), (0.68, 0.62), fill="#8E9E94")
-        el((0.24, 0.62), (0.30, 0.67), fill="#3B424C")
-        el((0.56, 0.62), (0.62, 0.67), fill="#3B424C")
-        for fx in (0.32, 0.45):
-            detail_figure(d, P(fx, 0.74)[0], P(fx, 0.74)[1], 0.34, "#E8B84B")
-        d.line([P(0.50, 0.63), P(0.54, 0.63)], fill=rgb(RED), width=2)
-        detail_figure(d, P(0.76, 0.74)[0], P(0.76, 0.74)[1], 0.44, "#2E3A46",
-                      skin="#8A6A4E")
-        tag(d, *P(0.03, 0.03), "SEA-TAC", "#181818", 8)
-        tag(d, *P(0.24, 0.03), "08:00", "#181818", 8)
-        tag(d, *P(0.03, 0.20), "ICE ARREST", RED, 7)
-        tag(d, *P(0.52, 0.20), "2 DETAINED", RED, 7)
+        bx((0.12, 0.38), (0.70, 0.60), fill="#BCC9C0", outline="#6F7F75")
+        for fx in (0.30, 0.44):
+            px, py = P(fx, 0.84)
+            detail_figure(d, px, py, 45, "#E8B84B")
+        px, py = P(0.78, 0.86)
+        detail_figure(d, px, py, 50, "#2E3A46")
 
     elif k == "tariff":
         grad("#DCE5EC", "#F3EFE3")
         for i in range(4):
-            fx = 0.02 + i * 0.13
-            bx((fx, 0.50), (fx + 0.10, 0.78), fill="#6E7E8C", outline="#4C5A66")
-            bx((fx + 0.02, 0.44), (fx + 0.08, 0.50), fill="#8494A1")
-        bx((0.60, 0.22), (0.98, 0.60), fill="#FFFDF5", outline=rgb(LINE))
-        for i, (h, c) in enumerate(((0.26, "#8A9AA6"), (0.18, "#B9C6CE"))):
-            bx((0.65 + i * 0.15, 0.54 - h), (0.75 + i * 0.15, 0.54), fill=c)
-        d.line([P(0.65, 0.26), P(0.92, 0.44)], fill=rgb(RED), width=3)
-        d.polygon([P(0.92, 0.44), P(0.87, 0.39), P(0.90, 0.35)], fill=rgb(RED))
-        detail_figure(d, P(0.54, 0.82)[0], P(0.54, 0.82)[1], 0.36, "#A8703C")
-        tag(d, *P(0.03, 0.03), "22 NOV", "#181818", 8)
-        tag(d, *P(0.24, 0.03), "US EASES", "#181818", 8)
-        tag(d, *P(0.48, 0.03), "CANADA", "#181818", 8)
-        tag(d, *P(0.66, 0.13), "TARIFF CUT", RED, 8)
+            fx = 0.10 + i * 0.16
+            bx((fx, 0.48), (fx + 0.12, 0.78), fill="#6E7E8C", outline="#4C5A66")
+        bx((0.62, 0.22), (0.96, 0.60), fill="#FFFDF5", outline=rgb(LINE))
+        bx((0.68, 0.42), (0.78, 0.54), fill="#8A9AA6")
+        bx((0.82, 0.32), (0.92, 0.54), fill="#B9C6CE")
+        d.line([P(0.68, 0.34), P(0.92, 0.46)], fill=rgb(RED), width=3)
 
     elif k == "f1":
         grad("#121A2A", "#3A2C4E")
-        for i in range(16):
-            bx((i / 16, 0.34 + (i % 4) * 0.05), ((i + 0.7) / 16, 0.68), fill="#1C2940")
-            for wy in (0.40, 0.48, 0.56):
-                bx(((i + 0.2) / 16, wy), ((i + 0.45) / 16, wy + 0.025), fill="#E8C25A")
-        poly([(0.08, 0.62), (0.18, 0.50), (0.34, 0.48), (0.48, 0.42),
-              (0.68, 0.44), (0.78, 0.54), (0.86, 0.56), (0.86, 0.62),
-              (0.66, 0.66), (0.22, 0.66)], fill=rgb(RED), outline="#5E1A1A")
-        poly([(0.30, 0.48), (0.44, 0.40), (0.54, 0.40), (0.48, 0.48)], fill="#E86A4A")
-        d.ellipse([P(0.45, 0.385), P(0.515, 0.455)], fill="#E8C25A", outline="#2A2A2A")
-        d.ellipse([P(0.465, 0.40), P(0.50, 0.435)], fill="#1A1A1A")
-        bx((0.06, 0.56), (0.16, 0.60), fill="#B52323")
-        bx((0.80, 0.52), (0.90, 0.56), fill="#B52323")
-        d.line([P(0.22, 0.50), P(0.28, 0.47)], fill="#C9CBD0", width=1)
-        for fx in (0.24, 0.68):
-            el((fx, 0.60), (fx + 0.11, 0.73), fill="#171717", outline="#3A3A3A")
-            el((fx + 0.04, 0.64), (fx + 0.07, 0.69), fill="#9AA3A8")
-        bx((0.78, 0.08), (0.98, 0.36), fill="#FFFFFF", outline="#9B9B9B")
-        for ry in range(4):
-            for rx in range(4):
+        for i in range(12):
+            bx((i / 12, 0.36 + (i % 3) * 0.06), ((i + 0.7) / 12, 0.66), fill="#1C2940")
+        poly([(0.10, 0.62), (0.20, 0.50), (0.36, 0.48), (0.50, 0.42),
+              (0.68, 0.44), (0.80, 0.54), (0.88, 0.56), (0.88, 0.62),
+              (0.68, 0.66), (0.24, 0.66)], fill=rgb(RED), outline="#5E1A1A")
+        for fx in (0.26, 0.68):
+            el((fx, 0.60), (fx + 0.10, 0.72), fill="#171717", outline="#3A3A3A")
+        bx((0.78, 0.10), (0.96, 0.34), fill="#FFFFFF", outline="#9B9B9B")
+        for ry in range(3):
+            for rx in range(3):
                 if (rx + ry) % 2 == 0:
-                    bx((0.78 + rx * 0.05, 0.08 + ry * 0.07),
-                       (0.83 + rx * 0.05, 0.15 + ry * 0.07), fill="#202020")
-        tag(d, *P(0.04, 0.03), "SAT NIGHT", "#181818", 8)
-        put(d, P(0.05, 0.15), "P1", font(19, True), "#FFFFFF")
-        tag(d, *P(0.22, 0.05), "VERSTAPPEN WINS", RED, 7)
+                    bx((0.78 + rx * 0.06, 0.10 + ry * 0.08),
+                       (0.84 + rx * 0.06, 0.18 + ry * 0.08), fill="#202020")
 
     elif k == "flags_jp_in":
         grad("#DFE8EF", "#F3EFE3")
-        bx((0.04, 0.16), (0.40, 0.54), fill="#FFFFFF", outline="#9B9B9B")
-        el((0.18, 0.28), (0.26, 0.36), fill=rgb(RED))
-        bx((0.58, 0.16), (0.94, 0.54), fill="#FFFFFF", outline="#9B9B9B")
-        bx((0.58, 0.16), (0.94, 0.28), fill="#FF9933")
-        bx((0.58, 0.42), (0.94, 0.54), fill="#138808")
-        el((0.71, 0.30), (0.81, 0.40), outline="#000088", width=1)
-        detail_figure(d, P(0.36, 0.92)[0], P(0.36, 0.92)[1], 0.44, "#2E3A46",
-                      skin="#C99564")
-        detail_figure(d, P(0.64, 0.92)[0], P(0.64, 0.92)[1], 0.44, "#4A5A6E",
-                      skin="#8A6A4E")
-        d.line([P(0.40, 0.72), P(0.60, 0.72)], fill="#C99564", width=4)
-        tag(d, *P(0.04, 0.04), "JAPAN + INDIA", "#181818", 7)
-        tag(d, *P(0.28, 0.62), "DEFENCE PACT", "#181818", 7)
-        tag(d, *P(0.70, 0.62), "22 NOV", "#181818", 7)
+        bx((0.06, 0.20), (0.38, 0.54), fill="#FFFFFF", outline="#9B9B9B")
+        el((0.18, 0.30), (0.26, 0.38), fill=rgb(RED))
+        bx((0.60, 0.20), (0.92, 0.54), fill="#FFFFFF", outline="#9B9B9B")
+        bx((0.60, 0.20), (0.92, 0.31), fill="#FF9933")
+        bx((0.60, 0.43), (0.92, 0.54), fill="#138808")
+        el((0.72, 0.33), (0.80, 0.41), outline="#000088", width=1)
+        for i, fx in enumerate((0.34, 0.64)):
+            px, py = P(fx, 0.88)
+            detail_figure(d, px, py, 45,
+                          "#2E3A46" if i == 0 else "#4A5A6E")
 
     else:
         el((0.34, 0.30), (0.66, 0.62), outline=col, width=2)
-        put(d, P(0.50, 0.46), s["place"].split(",")[0][:10], font(8, True), INK,
-            anchor="mm")
 
-    if k not in {"cop", "hormuz", "poland", "benghazi"}:
-        tag(d, x0 + 5, y1 - 12, s["place"], "#181818", 8)
+    tag(d, x0 + 5, y0 + 4, s["place"], "#181818", 7)
 
 
 
