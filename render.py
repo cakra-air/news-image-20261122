@@ -581,8 +581,8 @@ def build(out="entry.png"):
         head = font(15, True, True)
         for j, line in enumerate(wrap(s["headline"], head, 326 - 14, d)[:2]):
             put(d, (x + 7, y + 88 + j * 17), line, head, INK)
-        for j, line in enumerate(wrap(s["body"], font(9), 300, d)[:4]):
-            put(d, (x + 7, y + 122 + j * 10), line, font(9), INK)
+        for j, line in enumerate(wrap(s["body"], font(9), 300, d)[:7]):
+            put(d, (x + 7, y + 122 + j * 9), line, font(9), INK)
 
     for i, s in enumerate([x for x in STORIES if x["size"] == "small"][:8]):
         row, col = divmod(i, 4)
@@ -598,7 +598,7 @@ def build(out="entry.png"):
         head = font(10, True, True)
         for j, line in enumerate(wrap(s["headline"], head, 244 - 12, d)[:2]):
             put(d, (x + 6, y + 74 + j * 10), line, head, INK)
-        for j, line in enumerate(wrap(s["body"], font(7.5), 232, d)[:3]):
+        for j, line in enumerate(wrap(s["body"], font(7.5), 232, d)[:5]):
             put(d, (x + 6, y + 94 + j * 9), line, font(7.5), INK)
 
     d.rounded_rectangle([12, PANEL_Y0, 1012, PANEL_Y1], radius=4,
