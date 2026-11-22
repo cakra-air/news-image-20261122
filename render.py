@@ -377,6 +377,24 @@ def scene(d, box, s):
     else:
         el((0.34, 0.30), (0.66, 0.62), outline=col, width=2)
 
+    captions = {
+        "cop": "EU REJECTS COP31 DRAFT 3 - NO DEAL",
+        "hormuz": "IRAN STRIKES 3 TANKERS - US BLOCKADE",
+        "dymer": "RUSSIAN DRONE HITS FLATS - 14 MISSING",
+        "shipdrone": "DRONE HITS RUSSIAN SHIP - FIRE",
+        "poland": "RUSSIAN MISSILE + DRONE HIT POLAND",
+        "westbank": "SETTLERS ATTACK 4 VILLAGES",
+        "benghazi": "DRONE BLASTS RUSSIAN SHIP AT PORT",
+        "ice": "ICE ARRESTS TWO AT SEATTLE AIRPORT",
+        "tariff": "US EASES TARIFFS ON CANADA",
+        "f1": "VERSTAPPEN WINS LAS VEGAS GP",
+        "flags_jp_in": "JAPAN AND INDIA SIGN DEFENCE PACT",
+    }
+    cap = captions.get(k, "")
+    if cap:
+        f = font(8 if bw > 300 else 7, True)
+        d.rectangle([x0 + 2, y1 - 17, x1 - 2, y1 - 2], fill="#181818")
+        put(d, (x0 + 6, y1 - 15), cap, f, "#FFFFFF")
     tag(d, x0 + 5, y0 + 4, s["place"], "#181818", 7)
 
 
