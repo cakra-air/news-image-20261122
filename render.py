@@ -377,24 +377,6 @@ def scene(d, box, s):
     else:
         el((0.34, 0.30), (0.66, 0.62), outline=col, width=2)
 
-    captions = {
-        "cop": "EU REJECTS COP31 DRAFT 3 - NO DEAL",
-        "hormuz": "IRAN STRIKES 3 TANKERS - US BLOCKADE",
-        "dymer": "RUSSIAN DRONE HITS FLATS - 14 MISSING",
-        "shipdrone": "DRONE HITS RUSSIAN SHIP - FIRE",
-        "poland": "RUSSIAN MISSILE + DRONE HIT POLAND",
-        "westbank": "SETTLERS ATTACK 4 VILLAGES",
-        "benghazi": "DRONE BLASTS RUSSIAN SHIP AT PORT",
-        "ice": "ICE ARRESTS TWO AT SEATTLE AIRPORT",
-        "tariff": "US EASES TARIFFS ON CANADA",
-        "f1": "VERSTAPPEN WINS LAS VEGAS GP",
-        "flags_jp_in": "JAPAN AND INDIA SIGN DEFENCE PACT",
-    }
-    cap = captions.get(k, "")
-    if cap:
-        f = font(8 if bw > 300 else 7, True)
-        d.rectangle([x0 + 2, y1 - 17, x1 - 2, y1 - 2], fill="#181818")
-        put(d, (x0 + 6, y1 - 15), cap, f, "#FFFFFF")
     tag(d, x0 + 5, y0 + 4, s["place"], "#181818", 7)
 
 
@@ -589,34 +571,36 @@ def build(out="entry.png"):
     for i, s in enumerate([x for x in STORIES if x["size"] == "main"][:3]):
         x, y = 12 + i * 336, MAIN_Y
         d.rectangle([x, y, x + 326, y + MAIN_H], fill=rgb(CARD), outline=rgb(LINE))
-        scene(d, (x + 3, y + 3, x + 323, y + 113), s)
-        d.rectangle([x + 3, y + 115, x + 323, y + 129],
+        scene(d, (x + 3, y + 3, x + 323, y + 68), s)
+        d.rectangle([x + 3, y + 70, x + 323, y + 84],
                     fill=rgb(REGION_COLORS[s["region"]]))
-        square_badge(d, x + 7, y + 115, x + 21, y + 129, s["n"],
+        square_badge(d, x + 7, y + 70, x + 21, y + 84, s["n"],
                      REGION_COLORS[s["region"]])
-        put(d, (x + 26, y + 124), s["kicker"], font(9, True), "#FFFFFF", anchor="lm")
-        put(d, (x + 315, y + 124), s["source"], font(7), "#FFFFFF", anchor="rm")
+        put(d, (x + 26, y + 79), s["kicker"], font(9, True), "#FFFFFF", anchor="lm")
+        put(d, (x + 315, y + 79), s["source"], font(7), "#FFFFFF", anchor="rm")
         head = font(15, True, True)
         for j, line in enumerate(wrap(s["headline"], head, 326 - 14, d)[:2]):
-            put(d, (x + 7, y + 133 + j * 17), line, head, INK)
-        for line in wrap(s["body"], font(9), 235, d)[:1]:
-            put(d, (x + 7, y + 169), line, font(9), INK)
+            put(d, (x + 7, y + 88 + j * 17), line, head, INK)
+        for j, line in enumerate(wrap(s["body"], font(9), 300, d)[:3]):
+            put(d, (x + 7, y + 124 + j * 11), line, font(9), INK)
         chip(d, x + 250, y + 170, s["status"])
 
     for i, s in enumerate([x for x in STORIES if x["size"] == "small"][:8]):
         row, col = divmod(i, 4)
         x, y = 12 + col * 252, SMALL_Y0 + row * SMALL_STEP
         d.rectangle([x, y, x + 244, y + SMALL_H], fill=rgb(CARD), outline=rgb(LINE))
-        scene(d, (x + 3, y + 4, x + 241, y + 89), s)
-        d.rectangle([x + 3, y + 91, x + 241, y + 105],
+        scene(d, (x + 3, y + 4, x + 241, y + 54), s)
+        d.rectangle([x + 3, y + 56, x + 241, y + 70],
                     fill=rgb(REGION_COLORS[s["region"]]))
-        square_badge(d, x + 7, y + 91, x + 21, y + 105, s["n"],
+        square_badge(d, x + 7, y + 56, x + 21, y + 70, s["n"],
                      REGION_COLORS[s["region"]])
-        put(d, (x + 26, y + 98), s["kicker"], font(8, True), "#FFFFFF", anchor="lm")
-        put(d, (x + 235, y + 98), s["source"], font(7), "#FFFFFF", anchor="rm")
+        put(d, (x + 26, y + 63), s["kicker"], font(8, True), "#FFFFFF", anchor="lm")
+        put(d, (x + 235, y + 63), s["source"], font(7), "#FFFFFF", anchor="rm")
         head = font(10, True, True)
         for j, line in enumerate(wrap(s["headline"], head, 244 - 12, d)[:2]):
-            put(d, (x + 6, y + 109 + j * 10), line, head, INK)
+            put(d, (x + 6, y + 74 + j * 10), line, head, INK)
+        for j, line in enumerate(wrap(s["body"], font(7.5), 232, d)[:2]):
+            put(d, (x + 6, y + 96 + j * 9), line, font(7.5), INK)
         chip(d, x + 174, y + 126, s["status"], fill="#E9E2D2", fsize=7)
 
     d.rounded_rectangle([12, PANEL_Y0, 1012, PANEL_Y1], radius=4,
