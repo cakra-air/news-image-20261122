@@ -363,21 +363,24 @@ def scene(d, box, s):
 
     elif k == "flags_jp_in":
         grad("#DFE8EF", "#F3EFE3")
-        bx((0.06, 0.20), (0.38, 0.54), fill="#FFFFFF", outline="#9B9B9B")
-        el((0.18, 0.30), (0.26, 0.38), fill=rgb(RED))
-        bx((0.60, 0.20), (0.92, 0.54), fill="#FFFFFF", outline="#9B9B9B")
-        bx((0.60, 0.20), (0.92, 0.31), fill="#FF9933")
-        bx((0.60, 0.43), (0.92, 0.54), fill="#138808")
-        el((0.72, 0.33), (0.80, 0.41), outline="#000088", width=1)
-        for i, fx in enumerate((0.34, 0.64)):
-            px, py = P(fx, 0.88)
-            detail_figure(d, px, py, 45,
+        # Japan: white field with a large centred red disc
+        bx((0.03, 0.40), (0.33, 0.96), fill="#FFFFFF", outline="#6B6B6B", width=2)
+        el((0.147, 0.51), (0.214, 0.83), fill=rgb(RED))
+        # India: saffron / white / green with blue chakra
+        bx((0.67, 0.40), (0.97, 0.96), fill="#FFFFFF", outline="#6B6B6B", width=2)
+        bx((0.67, 0.40), (0.97, 0.59), fill="#FF9933")
+        bx((0.67, 0.77), (0.97, 0.96), fill="#138808")
+        el((0.775, 0.59), (0.825, 0.83), outline="#000088", width=2)
+        # delegates stand between the two flags, never over them
+        for i, fx in enumerate((0.45, 0.55)):
+            px, py = P(fx, 0.98)
+            detail_figure(d, px, py, 30,
                           "#2E3A46" if i == 0 else "#4A5A6E")
 
     else:
         el((0.34, 0.30), (0.66, 0.62), outline=col, width=2)
 
-    tag(d, x0 + 5, y0 + 4, s["place"], "#181818", 7)
+    tag(d, x0 + 5, y0 + 4, s["place"], "#181818", 8)
 
 
 
@@ -461,7 +464,7 @@ def map_panel(d):
         number_badge(d, bx, by, s["n"], col, r=6, fsize=9, width=2)
 
     ly = LEGEND_Y
-    f = font(6.5)
+    f = font(8)
     labels = [f"{reg} {sum(1 for s in STORIES if s['region'] == reg)}"
               for reg in REGIONS]
     widths = [d.textlength(label, font=f) for label in labels]
@@ -495,7 +498,7 @@ def list_panel(d, box, items):
     text_x = x0 + 40
     edge = (x1 - 6) if x1 < 512 else (x0 + 6)
     dot_by_n = {n: (dx, dy, col) for n, dx, dy, col in MAP_BRIEF_DOTS}
-    f = font(8)
+    f = font(9)
 
     for i, s in enumerate(items):
         dot = dot_by_n.get(s["n"])
@@ -519,9 +522,9 @@ def list_panel(d, box, items):
         d.rounded_rectangle([badge_x - 10, cy - 2, badge_x + 10, cy + 16], radius=3,
                             fill=rgb(col), outline=(255, 255, 255), width=1)
         put(d, (badge_x, cy + 7), str(s["n"]), font(9, True), "#FFFFFF", anchor="mm")
-        for j, line in enumerate(wrap(s["brief"], f, (x1 - 10) - text_x - 76, d)[:2]):
-            put(d, (text_x, cy - 3 + j * 9), line, f, INK)
-        put(d, (x1 - 10, cy + 7), s["source"], font(6.5), MUTED, anchor="rm")
+        for j, line in enumerate(wrap(s["brief"], f, (x1 - 10) - text_x - 70, d)[:2]):
+            put(d, (text_x, cy - 2 + j * 10), line, f, INK)
+        put(d, (x1 - 10, cy + 8), s["source"], font(7.5), MUTED, anchor="rm")
 
 
 # ---------------------------------------------------------------------------
@@ -559,14 +562,14 @@ def build(out="entry.png"):
         sx = 12 + i * sw
         d.line([sx, STAT_LINE_TOP, sx, STAT_LINE_BOT], fill=rgb(LINE), width=1)
         put(d, (sx + 71, STAT_BIG_Y), big, font(26, True, True), RED, anchor="mm")
-        put(d, (sx + 71, STAT_SMALL_Y), small, font(7), INK, anchor="mm")
+        put(d, (sx + 71, STAT_SMALL_Y), small, font(8), INK, anchor="mm")
 
     counts = {r: sum(1 for s in STORIES if s["region"] == r) for r in REGIONS}
     for i, r in enumerate(REGIONS):
         bx = 12 + i * 142
         d.rectangle([bx, REG_Y0, bx + 140, REG_Y1], fill=rgb(REGION_COLORS[r]))
         put(d, (bx + 6, (REG_Y0 + REG_Y1) / 2), f"{r} · {counts[r]}",
-            font(9, True), "#FFFFFF", anchor="lm")
+            font(10, True), "#FFFFFF", anchor="lm")
 
     for i, s in enumerate([x for x in STORIES if x["size"] == "main"][:3]):
         x, y = 12 + i * 336, MAIN_Y
@@ -577,7 +580,7 @@ def build(out="entry.png"):
         square_badge(d, x + 7, y + 70, x + 21, y + 84, s["n"],
                      REGION_COLORS[s["region"]])
         put(d, (x + 26, y + 79), s["kicker"], font(9, True), "#FFFFFF", anchor="lm")
-        put(d, (x + 315, y + 79), s["source"], font(7), "#FFFFFF", anchor="rm")
+        put(d, (x + 315, y + 79), s["source"], font(8), "#FFFFFF", anchor="rm")
         head = font(15, True, True)
         for j, line in enumerate(wrap(s["headline"], head, 326 - 14, d)[:2]):
             put(d, (x + 7, y + 88 + j * 17), line, head, INK)
@@ -594,7 +597,7 @@ def build(out="entry.png"):
         square_badge(d, x + 7, y + 56, x + 21, y + 70, s["n"],
                      REGION_COLORS[s["region"]])
         put(d, (x + 26, y + 63), s["kicker"], font(8, True), "#FFFFFF", anchor="lm")
-        put(d, (x + 235, y + 63), s["source"], font(7), "#FFFFFF", anchor="rm")
+        put(d, (x + 235, y + 63), s["source"], font(8), "#FFFFFF", anchor="rm")
         head = font(10, True, True)
         for j, line in enumerate(wrap(s["headline"], head, 244 - 12, d)[:2]):
             put(d, (x + 6, y + 74 + j * 10), line, head, INK)
@@ -625,9 +628,9 @@ def build(out="entry.png"):
     put(d, (43, 994), "CHECK", font(7, True), "#FFFFFF", anchor="mm")
     put(d, (76, 978),
         "Every story happened, or was first reported, on Sunday 22 November 2026.",
-        font(7.5), INK)
-    put(d, (76, 990), DATE_CHECK, font(7.5), INK)
-    put(d, (1012, 1011), SOURCES_LINE, font(8), INK, anchor="rm")
+        font(9), INK)
+    put(d, (76, 990), DATE_CHECK, font(9), INK)
+    put(d, (1012, 1011), SOURCES_LINE, font(9), INK, anchor="rm")
 
     im.save(out, "PNG", optimize=True)
     return out
