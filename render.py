@@ -50,6 +50,7 @@ MAP_BRIEF_DOTS = []   # (n, dot_x, dot_y, colour)
 
 
 def font(px, bold=False, serif=False):
+    px = max(10, px)  # global minimum: every text stays readable
     if serif:
         name = "georgiab.ttf" if bold else "georgia.ttf"
     else:
@@ -345,10 +346,6 @@ def scene(d, box, s):
             burst(d, ex, ey, 5)
             # small drone at the eastern origin
             d.ellipse([ax - 2, ay - 2, ax + 2, ay + 2], fill="#2E3A46")
-        rx, ry = pj(55.0, 32.5)
-        tag(d, rx - 2, ry - 6, "RUSSIA", "#181818", 6)
-        px, py = pj(52.6, 19.0)
-        tag(d, px - 2, py + 6, "POLAND", "#181818", 6)
 
     elif k == "westbank":
         grad("#33455A", "#7B7C72")
@@ -473,7 +470,7 @@ def scene(d, box, s):
         for fx, fy in ((0.28, 0.62), (0.58, 0.70), (0.82, 0.56)):
             ax, ay = P(fx, fy)
             burst(d, ax, ay, 5)
-        put(d, P(0.88, 0.08), "186", font(14, True), "#FFFFFF")
+        put(d, P(0.90, 0.44), "186", font(14, True), "#FFFFFF")
 
     elif k == "radar":
         grad("#1C3048", "#4A6276")
@@ -626,11 +623,11 @@ def map_panel(d):
     labels = [f"{reg} {sum(1 for s in STORIES if s['region'] == reg)}"
               for reg in REGIONS]
     widths = [d.textlength(label, font=f) for label in labels]
-    lx = mx0 + (mx1 - mx0 - sum(17 + w for w in widths)) / 2
+    lx = mx0 + (mx1 - mx0 - sum(10 + w for w in widths)) / 2
     for reg, label, w in zip(REGIONS, labels, widths):
         d.ellipse([lx, ly, lx + 7, ly + 7], fill=rgb(REGION_COLORS[reg]))
         put(d, (lx + 10, ly + 3.5), label, f, INK, anchor="lm")
-        lx += 17 + w
+        lx += 10 + w
 
 
 def redraw_map_marks(d):
@@ -697,9 +694,9 @@ def build(out="entry.png"):
     d.rectangle([0, 0, 1024, BAR_H], fill=rgb(RED))
     put(d, (12, BAR_H / 2), "THE WORLD IN ONE DAY",
         font(10.5, True), "#FFFFFF", anchor="lm")
-    put(d, (512, BAR_H / 2), "SUNDAY 22 NOV 2026 · WEEK 47 · Q4 · UTC",
-        font(10.5, True), "#FFFFFF", anchor="mm")
-    put(d, (1012, BAR_H / 2), f"{len(STORIES)} STORIES · {len(REGIONS)} REGIONS",
+    put(d, (1012, BAR_H / 2),
+        f"{len(STORIES)} STORIES IN {len(REGIONS)} REGIONS · "
+        "EVERY ONE DATED SUNDAY 22 NOVEMBER 2026",
         font(10.5, True), "#FFFFFF", anchor="rm")
     put(d, (512, TITLE_Y), "Sunday 22 November 2026",
         font(45, True, True), INK, anchor="mm")
@@ -708,7 +705,7 @@ def build(out="entry.png"):
         font(13, False, True), MUTED, anchor="mm")
     d.line([12, RULE_Y, 1012, RULE_Y], fill=rgb(LINE), width=1)
 
-    stats = [("44H", "COP31 overtime, then collapse"),
+    stats = [("44H", "COP31 ends with no deal"),
              ("3", "tankers hit near Hormuz"),
              ("14", "missing in Dymer, Ukraine"),
              ("4", "West Bank villages attacked"),
@@ -739,14 +736,14 @@ def build(out="entry.png"):
                      REGION_COLORS[s["region"]])
         put(d, (x + 26, y + 64), s["kicker"], font(10, True), "#FFFFFF", anchor="lm")
         put(d, (x + 315, y + 64), s["source"], font(8), "#FFFFFF", anchor="rm")
-        head = font(15, True, True)
+        head = font(22, True, True)
         hlines = wrap(s["headline"], head, 326 - 14, d)[:2]
         for j, line in enumerate(hlines):
-            put(d, (x + 7, y + 73 + j * 19), line, head, INK)
-        body_y = 73 + (len(hlines) - 1) * 19 + 18
-        max_lines = max(2, int((188 - body_y - 12) / 10) + 1)
-        for j, line in enumerate(wrap(s["body"], font(10), 300, d)[:max_lines]):
-            put(d, (x + 7, y + body_y + j * 10), line, font(10), INK)
+            put(d, (x + 7, y + 73 + j * 25), line, head, INK)
+        body_y = 73 + (len(hlines) - 1) * 25 + 20
+        max_lines = max(2, int((188 - body_y - 21) / 21) + 1)
+        for j, line in enumerate(wrap(s["body"], font(18), 300, d)[:max_lines]):
+            put(d, (x + 7, y + body_y + j * 21), line, font(18), INK)
 
     for i, s in enumerate([x for x in STORIES if x["size"] == "small"][:8]):
         row, col = divmod(i, 4)
@@ -759,14 +756,14 @@ def build(out="entry.png"):
                      REGION_COLORS[s["region"]])
         put(d, (x + 26, y + 63), s["kicker"], font(10, True), "#FFFFFF", anchor="lm")
         put(d, (x + 235, y + 63), s["source"], font(8), "#FFFFFF", anchor="rm")
-        head = font(12, True, True)
+        head = font(14, True, True)
         hlines = wrap(s["headline"], head, 244 - 12, d)[:2]
         for j, line in enumerate(hlines):
-            put(d, (x + 6, y + 74 + j * 12), line, head, INK)
-        sby = 74 + (len(hlines) - 1) * 12 + 14
-        smax = max(2, int((140 - sby - 12) / 10) + 1)
-        for j, line in enumerate(wrap(s["body"], font(10), 232, d)[:smax]):
-            put(d, (x + 6, y + sby + j * 10), line, font(10), INK)
+            put(d, (x + 6, y + 74 + j * 16), line, head, INK)
+        sby = 74 + (len(hlines) - 1) * 16 + 16
+        smax = max(2, int((140 - sby - 14) / 12) + 1)
+        for j, line in enumerate(wrap(s["body"], font(11), 232, d)[:smax]):
+            put(d, (x + 6, y + sby + j * 12), line, font(11), INK)
 
     d.rounded_rectangle([12, PANEL_Y0, 1012, PANEL_Y1], radius=4,
                         fill=rgb(PANEL), outline=rgb(LINE), width=1)

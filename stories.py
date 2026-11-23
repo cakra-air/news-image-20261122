@@ -21,68 +21,68 @@ STORIES = [
     # ---- 3 lead stories ----------------------------------------------------
     dict(n=1, region="World", place="COP31: FINAL TEXT", lat=36.90, lon=30.71,
          kicker="COP31 · FOSSIL DEAL REJECTED", headline="COP31 ends with no climate deal",
-         body="EU and island states rejected the draft after 44 hours of overtime in Antalya. The cover text never named fossil fuels, the main driver of warming, and dropped a $120bn adaptation target. Ireland's Darragh O'Brien said the bloc could not endorse a deal that does not meet the moment. The Marshall Islands, Panama, Vanuatu and Belize also refused; Kathy Jetnil-Kijiner said they would not compromise their future for fossil fuel interests. Saudi Arabia argued states need flexibility on how they cut emissions. UN rules require consensus, so the text was not adopted.",
+         body="EU rejects draft after 44 hours. No fossil fuels named; $120bn aid target dropped.",
          source="Reuters / RFI", status="CONFIRMED", size="main", scene="cop",
          brief="Antalya: COP31 collapses as EU rejects fossil-free draft"),
 
     dict(n=2, region="Middle East", place="STRAIT OF HORMUZ", lat=26.57, lon=56.25,
          kicker="IRAN STRIKES 3 TANKERS", headline="Iran strikes three tankers as blockade bites",
-         body="Iran unveiled a new missile launcher at an underground facility and vowed to break the US naval blockade by any means. Three tankers were struck near Hormuz as Tehran called the siege an act of war. More than a dozen vessels have gathered near Kharg Island and shipping alerts spread across the Gulf. The foreign minister said talks with Qatari mediators were under way.",
+         body="Iran strikes three tankers near Hormuz and calls the US blockade an act of war.",
          source="AP / Al Jazeera", status="CONFIRMED", size="main", scene="hormuz",
          brief="Hormuz: Iran hits 3 tankers, vows to break US blockade"),
 
     dict(n=3, region="Europe", place="KYIV, UKRAINE", lat=50.45, lon=30.52,
          kicker="WAR · 186 DRONES", headline="Russia fires 186 drones at Ukraine",
-         body="Russia fired 186 drones and missiles at Ukraine overnight, the air force said. Defences shot down or jammed 161 of them, but hits were recorded at 18 locations. In Dymer, north of Kyiv, a residential block was damaged and 14 people were reported missing, including two children. Nine residents were evacuated and rescuers dug through the rubble. A nearby city moved schools online for the week. Zelensky again urged Washington to release delayed Patriot missiles, saying Russia used some 2,700 drones and 1,460 glide bombs in a single week.",
+         body="Russia fires 186 drones overnight; 161 are downed. Fourteen missing in Dymer.",
          source="Air Force / Reuters", status="CONFIRMED", size="main", scene="drones",
          brief="Ukraine: 186 Russian drones fired overnight, 161 downed"),
 
     # ---- 8 illustrated stories ---------------------------------------------
     dict(n=4, region="Middle East", place="MANAMA, BAHRAIN", lat=26.23, lon=50.58,
          kicker="CLAIM VS DENIAL", headline="Iran says it hit US radars in Bahrain",
-         body="The IRGC claimed two radar sites were destroyed; Bahrain's interior ministry said facilities were unharmed and a fire at a civil site was put out. No injuries were reported.",
+         body="The IRGC claimed two radar sites were hit; Bahrain said its facilities were unharmed. No injuries were reported.",
          source="IRGC / Bahrain MoI", status="CLAIM", size="small", scene="radar",
          brief="Bahrain: Iran claims radar strikes, government denies damage"),
 
     dict(n=5, region="Europe", place="POLAND", lat=52.20, lon=21.00,
          kicker="MISSILE + DRONE IN POLAND", headline="Missile and drone hit Poland",
-         body="Debris from a Russian missile and a drone was recovered in Poland. NATO allies demanded answers from Moscow about the incident on alliance soil, as calls grew for a stronger air-defence posture on the eastern flank.",
+         body="Debris from a Russian missile and a drone was recovered on NATO soil. Allies demanded answers from Moscow.",
          source="Reuters / AP", status="REPORTED", size="small", scene="poland",
          brief="Poland: Russian missile and drone found on NATO soil"),
 
     dict(n=6, region="Middle East", place="WEST BANK", lat=32.00, lon=35.30,
          kicker="SETTLERS HIT 4 VILLAGES", headline="Four villages hit in settler attacks",
-         body="Activists say Israeli settlers torched vehicles and property in four West Bank villages overnight. Officials called the attacks organised and demanded protection for Palestinian communities in the occupied territory.",
+         body="Activists said settlers torched vehicles and property in four villages overnight. Officials demanded protection.",
          source="CBS / Yahoo", status="REPORTED", size="small", scene="westbank",
          brief="West Bank: four villages targeted in suspected settler attacks"),
 
     dict(n=7, region="Asia", place="SERANG, INDONESIA", lat=-6.12, lon=106.13,
          kicker="FACTORY FIRE", headline="Candy factory fire kills three",
-         body="The blaze tore through the facility late Saturday; at least three people were killed and others remain missing as search teams work the site.",
+         body="A fire tore through the candy factory late Saturday. Three workers were killed and others remain missing.",
          source="Detik / AFP", status="REPORTED", size="small", scene="factory",
          brief="Indonesia: candy factory fire kills three, others missing"),
 
     dict(n=8, region="Americas", place="SEATTLE, USA", lat=47.45, lon=-122.31,
-         kicker="ICE ARRESTS AT SEA-TAC", headline="Agents arrest pair on airport jetway",
-         body="Washington's governor called the ICE operation 'out of control' after two people were detained on an aircraft jetway at Seattle-Tacoma airport. The agency defended the arrest as a lawful enforcement action.",
+         kicker="ICE ARRESTS", headline="Agents arrest pair on airport jetway",
+         body="Two people were detained on an aircraft jetway at Seattle-Tacoma. The governor called the operation out of control.",
          source="The Independent", status="CONFIRMED", size="small", scene="ice",
          brief="Seattle: ICE arrests on jetway draw governor's condemnation"),
 
     dict(n=9, region="Americas", place="WASHINGTON, USA", lat=38.90, lon=-77.04,
          kicker="US EASES CANADA TARIFFS", headline="Trump eases some Canada tariffs",
-         body="Trump eased some tariffs on Canadian goods days before the midterms, as trade talks between Washington and Ottawa resumed after weeks of tension over border and energy policy.",
+         body="Trump eased some tariffs on Canadian goods as trade talks resumed before the midterms.",
          source="DW", status="REPORTED", size="small", scene="tariff",
          brief="Washington: Trump softens some tariffs on Canada"),
 
     dict(n=10, region="Americas", place="LAS VEGAS, USA", lat=36.17, lon=-115.14,
-         kicker="VERSTAPPEN WINS VEGAS", headline="Verstappen wins Vegas Grand Prix",
-         body="Verstappen held off Russell, Antonelli and Norris to take a third Las Vegas win in four years, starting from pole after a late qualifying twist. The race highlighted a tight title fight.",
+         kicker="VERSTAPPEN WINS", headline="Verstappen wins Vegas Grand Prix",
+         body="Verstappen held off Russell and Norris to take a third Las Vegas victory in four years.",
          source="Formula 1 / The Hindu", status="CONFIRMED", size="small", scene="f1",
          brief="Las Vegas: Verstappen wins third Vegas GP in four years"),
 
     dict(n=11, region="Asia", place="TOKYO / NEW DELHI", lat=35.68, lon=139.69,
          kicker="JAPAN-INDIA DEFENCE PACT", headline="Japan, India deepen defence ties",
-         body="Japan and India agreed to widen military and defence-industry cooperation at talks in Tokyo, deepening a partnership aimed at countering China's reach in the Indo-Pacific.",
+         body="Japan and India agreed to widen military and defence-industry cooperation at talks in Tokyo.",
          source="AP", status="CONFIRMED", size="small", scene="flags_jp_in",
          brief="Tokyo: Japan and India agree wider defence cooperation"),
 
@@ -216,8 +216,8 @@ DATE_CHECK = (
 )
 
 SOURCES_LINE = (
-    "Sources named beside each story · Original drawings · HOW WE CHECKED: CONFIRMED = two or "
-    "more outlets · OFFICIAL = on the record · REPORTED = one outlet · CLAIM = one side's account."
+    "Sources: Reuters, AP, AFP, Al Jazeera, RFI, DW, The Independent, "
+    "The Hindu, Formula 1, Washington Post, Euronews."
 )
 
 REGIONS = ["Europe", "Middle East", "Africa", "Asia", "Americas", "Oceania", "World"]
