@@ -183,14 +183,40 @@ def detail_figure(d, x, y, h, coat, skin="#C99564", helmet=None):
            width=max(2, int(h * 0.1)))
 
 
-def ship_icon(d, x, y, sc, color="#AAB7C1"):
-    d.polygon([(x - 1.7 * sc, y), (x + 1.7 * sc, y),
-               (x + 1.3 * sc, y + 0.65 * sc), (x - 1.3 * sc, y + 0.65 * sc)],
+def ship_icon(d, x, y, sc, color="#AAB7C1", kind="cargo"):
+    # long low hull with a pointed bow to the right
+    d.polygon([(x - 1.9 * sc, y), (x + 2.0 * sc, y - 0.12 * sc),
+               (x + 1.6 * sc, y + 0.5 * sc), (x - 1.5 * sc, y + 0.5 * sc)],
               fill=rgb(color), outline="#4A5864")
-    d.rectangle([x - 0.9 * sc, y - 0.55 * sc, x + 0.6 * sc, y],
-                fill="#D5DEE5", outline="#6C7A86")
-    d.rectangle([x - 0.2 * sc, y - 0.95 * sc, x + 0.12 * sc, y - 0.55 * sc],
-                fill="#93A2AD")
+    d.line([x - 1.9 * sc, y + 0.28 * sc, x + 1.7 * sc, y + 0.28 * sc],
+           fill="#8A99A4", width=1)
+    # white bridge superstructure at the stern (left)
+    d.rectangle([x - 1.5 * sc, y - 0.9 * sc, x - 0.8 * sc, y],
+                fill="#E8EEF1", outline="#6C7A86")
+    d.rectangle([x - 1.4 * sc, y - 0.8 * sc, x - 1.25 * sc, y - 0.65 * sc],
+                fill="#5B7488")
+    d.rectangle([x - 1.15 * sc, y - 0.8 * sc, x - 1.0 * sc, y - 0.65 * sc],
+                fill="#5B7488")
+    if kind == "cargo":
+        # two tiers of stacked, differently coloured containers
+        cols = ("#B5342E", "#2E6FA3", "#C48A2E", "#3E7A52", "#8A5A9E")
+        for tier in range(2):
+            for i in range(5):
+                cx = x - 0.7 * sc + i * 0.42 * sc
+                cy = y - (0.55 + tier * 0.55) * sc
+                c = cols[(i + tier * 2) % len(cols)]
+                d.rectangle([cx, cy, cx + 0.36 * sc, cy + 0.48 * sc],
+                            fill=c, outline="#3A3A3A")
+    else:
+        # flat tanker deck: piping, hatches and a small crane
+        d.line([x - 0.7 * sc, y - 0.18 * sc, x + 1.5 * sc, y - 0.18 * sc],
+               fill="#5E6E7A", width=2)
+        for i in range(4):
+            cx = x - 0.6 * sc + i * 0.55 * sc
+            d.ellipse([cx, y - 0.34 * sc, cx + 0.28 * sc, y - 0.16 * sc],
+                      fill="#93A2AD", outline="#4A5864")
+        d.line([x + 0.6 * sc, y - 0.2 * sc, x + 1.0 * sc, y - 1.0 * sc],
+               fill="#C9D2D8", width=2)
 
 
 def burst(d, x, y, r, color="#E26B1D"):
@@ -240,18 +266,21 @@ def scene(d, box, s):
                fill=mix(top, bottom, i / (steps - 1)))
 
     if k == "cop":
-        grad("#22334A", "#43536B")
-        bx((0.05, 0.60), (0.95, 0.74), fill="#7A6146")
+        grad("#26354A", "#43536B")
+        bx((0.05, 0.62), (0.74, 0.76), fill="#7A6146", outline="#4A3A28")
         coats = ["#3E5A7A", "#7A4A4A", "#4C6B57", "#6A5A3E", "#3E5A7A", "#7A4A4A"]
-        for i, fx in enumerate((0.10, 0.22, 0.34, 0.46, 0.58, 0.70)):
-            el((fx, 0.34), (fx + 0.06, 0.42), fill="#C99564")
-            poly([(fx + 0.01, 0.42), (fx + 0.05, 0.42), (fx + 0.08, 0.60),
-                  (fx - 0.02, 0.60)], fill=coats[i])
-        bx((0.76, 0.12), (0.96, 0.56), fill="#FFFDF5", outline=rgb(LINE))
+        for i, fx in enumerate((0.09, 0.20, 0.31, 0.42, 0.53, 0.64)):
+            # head, hair and shoulders above the table
+            el((fx, 0.36), (fx + 0.055, 0.47), fill="#C99564", outline="#7A5538")
+            el((fx - 0.005, 0.35), (fx + 0.06, 0.41), fill="#3A2A1E")
+            el((fx - 0.025, 0.46), (fx + 0.08, 0.68), fill=coats[i],
+               outline="#2E2E2E")
+        # rejected draft at the right
+        bx((0.76, 0.12), (0.97, 0.68), fill="#FFFDF5", outline=rgb(LINE))
         for j in range(4):
-            ln((0.79, 0.20 + j * 0.07), (0.93, 0.20 + j * 0.07), "#9B9B9B", 1)
-        bx((0.76, 0.42), (0.96, 0.56), fill=rgb(RED))
-        put(d, P(0.86, 0.45), "NO DEAL", font(7, True), "#FFFFFF", anchor="mm")
+            ln((0.79, 0.20 + j * 0.06), (0.94, 0.20 + j * 0.06), "#9B9B9B", 1)
+        bx((0.76, 0.44), (0.97, 0.60), fill=rgb(RED))
+        put(d, P(0.865, 0.48), "NO DEAL", font(7, True), "#FFFFFF", anchor="mm")
 
     elif k == "hormuz":
         grad("#1E3046", "#5C7185")
@@ -259,7 +288,7 @@ def scene(d, box, s):
             ln((0.02, yy), (0.98, yy), "#3E5E78", 1)
         for fx in (0.18, 0.46, 0.70):
             px, py = P(fx, 0.50)
-            ship_icon(d, px, py, 10)
+            ship_icon(d, px, py, 10, kind="tanker")
             ax, ay = P(fx + 0.04, 0.40)
             burst(d, ax, ay, 4)
         poly([(0, 0), (0.14, 0), (0.09, 0.30), (0, 0.40)], fill="#C9B98F")
@@ -281,27 +310,39 @@ def scene(d, box, s):
 
     elif k == "shipdrone":
         grad("#1B2C42", "#3D5A72")
-        for yy in (0.52, 0.64, 0.76, 0.88):
+        poly([(0, 0.20), (0.06, 0.18), (0.10, 0.32), (0.05, 0.48), (0, 0.50)],
+             fill="#C9B98F")
+        for yy in (0.54, 0.66, 0.78, 0.90):
             ln((0.02, yy), (0.98, yy), "#4E6E88", 1)
-        px, py = P(0.38, 0.68)
-        ship_icon(d, px, py, 15)
-        ax, ay = P(0.46, 0.44)
+        px, py = P(0.38, 0.72)
+        ship_icon(d, px, py, 13, kind="cargo")
+        ax, ay = P(0.46, 0.46)
         burst(d, ax, ay, 5)
-        cx, cy = P(0.80, 0.28)
-        for ox, oy in ((-9, -5), (9, -5), (-9, 5), (9, 5)):
-            el((cx + ox - 3, cy + oy - 2), (cx + ox + 3, cy + oy + 2), fill="#D5DEE5")
-        d.line([cx - 9, cy - 5, cx + 9, cy + 5], fill="#D5DEE5", width=1)
-        d.line([cx + 9, cy - 5, cx - 9, cy + 5], fill="#D5DEE5", width=1)
+        # quadcopter drone in the air with a strike line
+        cx, cy = P(0.80, 0.26)
+        for ox, oy in ((-10, -5), (10, -5), (-10, 5), (10, 5)):
+            d.ellipse([cx + ox - 4, cy + oy - 3, cx + ox + 4, cy + oy + 3],
+                      fill="#D5DEE5")
+        d.line([cx - 10, cy - 5, cx + 10, cy + 5], fill="#BCC7D0", width=1)
+        d.line([cx + 10, cy - 5, cx - 10, cy + 5], fill="#BCC7D0", width=1)
+        d.line([cx, cy + 5, ax, ay], fill=rgb(RED), width=2)
 
     elif k == "poland":
-        grad("#DCE7EC", "#F2ECDD")
-        pts = [(0.24, 0.28), (0.38, 0.20), (0.54, 0.18), (0.68, 0.24),
-               (0.76, 0.36), (0.72, 0.52), (0.60, 0.62), (0.50, 0.76),
-               (0.38, 0.68), (0.28, 0.56), (0.20, 0.42)]
-        poly(pts, fill=rgb(LAND), outline=rgb(COAST))
-        for fx, fy in ((0.44, 0.40), (0.62, 0.52)):
-            ax, ay = P(fx, fy)
-            burst(d, ax, ay, 5)
+        # real map: Poland with its neighbours, Russia to the east
+        pj = real_map(box, 47, 58, 8, 36, 4)
+        for sx0, sy0, tx, ty in ((54.0, 31.0, 52.23, 21.01),
+                                 (53.0, 30.0, 51.70, 22.80)):
+            ax, ay = pj(sx0, sy0)
+            ex, ey = pj(tx, ty)
+            d.line([ax, ay, ex, ey], fill=rgb(RED), width=2)
+            d.polygon([(ex, ey), (ex - 5, ey - 2), (ex - 4, ey + 3)], fill=rgb(RED))
+            burst(d, ex, ey, 5)
+            # small drone at the eastern origin
+            d.ellipse([ax - 2, ay - 2, ax + 2, ay + 2], fill="#2E3A46")
+        rx, ry = pj(55.0, 32.5)
+        tag(d, rx - 2, ry - 6, "RUSSIA", "#181818", 6)
+        px, py = pj(52.6, 19.0)
+        tag(d, px - 2, py + 6, "POLAND", "#181818", 6)
 
     elif k == "westbank":
         grad("#33455A", "#7B7C72")
@@ -317,49 +358,75 @@ def scene(d, box, s):
     elif k == "benghazi":
         grad("#2B3A4C", "#8A8A82")
         ln((0, 0.74), (1, 0.74), "#7C7568", 2)
-        px, py = P(0.42, 0.70)
-        ship_icon(d, px, py, 3.2)
-        ax, ay = P(0.50, 0.46)
+        # naval ship, not a container ship
+        poly([(0.34, 0.60), (0.74, 0.60), (0.70, 0.74), (0.38, 0.74)],
+             fill="#5E6E7A", outline="#3A4A56")
+        bx((0.44, 0.42), (0.60, 0.60), fill="#C2CDD5", outline="#6C7A86")
+        bx((0.52, 0.34), (0.56, 0.42), fill="#8A99A4")
+        bx((0.78, 0.24), (0.82, 0.64), fill="#8A95A0")
+        ln((0.80, 0.26), (0.62, 0.26), "#8A95A0", 2)
+        ax, ay = P(0.55, 0.46)
         burst(d, ax, ay, 7)
-        bx((0.80, 0.24), (0.84, 0.64), fill="#8A95A0")
-        ln((0.82, 0.26), (0.64, 0.26), "#8A95A0", 2)
+        # sea drone approaching with a wake
+        sx, sy = P(0.14, 0.84)
+        # low unmanned surface vessel: flat hull, sensor mast, wake
+        d.polygon([(sx - 14, sy - 2), (sx + 12, sy - 3),
+                   (sx + 9, sy + 4), (sx - 11, sy + 4)],
+                  fill="#3E4A52", outline="#20282E")
+        d.rectangle([sx - 2, sy - 9, sx + 3, sy - 2], fill="#20282E")
+        d.ellipse([sx - 1, sy - 12, sx + 2, sy - 9], fill="#C2CDD5")
+        d.line([sx - 24, sy + 5, sx - 14, sy + 3], fill="#AFC3D0", width=1)
+        d.line([sx - 24, sy + 9, sx - 14, sy + 5], fill="#AFC3D0", width=1)
+        d.line([sx + 12, sy, ax, ay], fill=rgb(RED), width=2)
 
     elif k == "ice":
         grad("#DCE5EC", "#F3EFE3")
-        d.rounded_rectangle([P(0.62, 0.24), P(1.02, 0.78)], radius=9,
+        # aircraft door at the right, jetway tube in the middle
+        d.rounded_rectangle([P(0.64, 0.28), P(1.02, 0.78)], radius=8,
                             fill="#D2DCE4", outline="#8493A0")
-        bx((0.12, 0.38), (0.70, 0.60), fill="#BCC9C0", outline="#6F7F75")
-        for fx in (0.30, 0.44):
-            px, py = P(fx, 0.84)
-            detail_figure(d, px, py, 45, "#E8B84B")
-        px, py = P(0.78, 0.86)
-        detail_figure(d, px, py, 50, "#2E3A46")
+        bx((0.70, 0.34), (0.74, 0.42), fill="#9AA9B5")
+        bx((0.10, 0.42), (0.68, 0.60), fill="#BCC9C0", outline="#6F7F75")
+        bx((0.12, 0.60), (0.66, 0.64), fill="#8E9E94")
+        # two detainees in yellow vests, hands linked by cuffs
+        for fx in (0.28, 0.40):
+            px, py = P(fx, 0.90)
+            detail_figure(d, px, py, 26, "#E8B84B")
+        d.line([P(0.31, 0.74), P(0.37, 0.74)], fill=rgb(RED), width=2)
+        # uniformed agent with badge
+        px, py = P(0.58, 0.92)
+        detail_figure(d, px, py, 30, "#2E3A46")
+        d.ellipse([P(0.585, 0.72), P(0.60, 0.75)], fill="#E8C25A")
 
     elif k == "tariff":
         grad("#DCE5EC", "#F3EFE3")
-        for i in range(4):
-            fx = 0.10 + i * 0.16
-            bx((fx, 0.48), (fx + 0.12, 0.78), fill="#6E7E8C", outline="#4C5A66")
-        bx((0.62, 0.22), (0.96, 0.60), fill="#FFFDF5", outline=rgb(LINE))
-        bx((0.68, 0.42), (0.78, 0.54), fill="#8A9AA6")
-        bx((0.82, 0.32), (0.92, 0.54), fill="#B9C6CE")
-        d.line([P(0.68, 0.34), P(0.92, 0.46)], fill=rgb(RED), width=3)
+        # falling tariff bars with a red downward arrow
+        for i, h in enumerate((0.34, 0.27, 0.20, 0.13)):
+            fx = 0.06 + i * 0.15
+            bx((fx, 0.74 - h), (fx + 0.11, 0.74),
+               fill=("#6E7E8C", "#7E8E9A", "#93A2AD", "#A9B6C0")[i],
+               outline="#4C5A66")
+        d.line([P(0.08, 0.28), P(0.60, 0.52)], fill=rgb(RED), width=3)
+        d.polygon([P(0.60, 0.52), P(0.54, 0.47), P(0.55, 0.56)], fill=rgb(RED))
+        # crates moving between the two countries
+        bx((0.68, 0.48), (0.80, 0.70), fill="#A8703C", outline="#6A4A2A")
+        bx((0.83, 0.54), (0.95, 0.70), fill="#C48A2E", outline="#6A4A2A")
+        ln((0.70, 0.54), (0.78, 0.54), "#6A4A2A", 1)
+        ln((0.85, 0.60), (0.93, 0.60), "#6A4A2A", 1)
 
     elif k == "f1":
         grad("#121A2A", "#3A2C4E")
-        for i in range(12):
-            bx((i / 12, 0.36 + (i % 3) * 0.06), ((i + 0.7) / 12, 0.66), fill="#1C2940")
-        poly([(0.10, 0.62), (0.20, 0.50), (0.36, 0.48), (0.50, 0.42),
-              (0.68, 0.44), (0.80, 0.54), (0.88, 0.56), (0.88, 0.62),
-              (0.68, 0.66), (0.24, 0.66)], fill=rgb(RED), outline="#5E1A1A")
-        for fx in (0.26, 0.68):
-            el((fx, 0.60), (fx + 0.10, 0.72), fill="#171717", outline="#3A3A3A")
-        bx((0.78, 0.10), (0.96, 0.34), fill="#FFFFFF", outline="#9B9B9B")
+        # simple banner instead of a forced detailed car drawing
+        d.rectangle([x0 + 6, y0 + 12, x1 - 6, y0 + 34], fill=rgb(RED))
+        put(d, (x0 + 12, y0 + 16), "F1 · VERSTAPPEN WINS VEGAS",
+            font(10, True), "#FFFFFF")
+        # chequered flag: mandatory victory symbol
+        ln((0.86, 0.90), (0.86, 0.36), "#D6DCE2", 2)
+        bx((0.87, 0.38), (0.99, 0.72), fill="#FFFFFF", outline="#6B6B6B")
         for ry in range(3):
-            for rx in range(3):
+            for rx in range(2):
                 if (rx + ry) % 2 == 0:
-                    bx((0.78 + rx * 0.06, 0.10 + ry * 0.08),
-                       (0.84 + rx * 0.06, 0.18 + ry * 0.08), fill="#202020")
+                    bx((0.87 + rx * 0.06, 0.38 + ry * 0.11),
+                       (0.93 + rx * 0.06, 0.49 + ry * 0.11), fill="#202020")
 
     elif k == "flags_jp_in":
         grad("#DFE8EF", "#F3EFE3")
@@ -498,7 +565,7 @@ def list_panel(d, box, items):
     text_x = x0 + 40
     edge = (x1 - 6) if x1 < 512 else (x0 + 6)
     dot_by_n = {n: (dx, dy, col) for n, dx, dy, col in MAP_BRIEF_DOTS}
-    f = font(9)
+    f = font(10.5)
 
     for i, s in enumerate(items):
         dot = dot_by_n.get(s["n"])
@@ -523,8 +590,8 @@ def list_panel(d, box, items):
                             fill=rgb(col), outline=(255, 255, 255), width=1)
         put(d, (badge_x, cy + 7), str(s["n"]), font(9, True), "#FFFFFF", anchor="mm")
         for j, line in enumerate(wrap(s["brief"], f, (x1 - 10) - text_x - 70, d)[:2]):
-            put(d, (text_x, cy - 2 + j * 10), line, f, INK)
-        put(d, (x1 - 10, cy + 8), s["source"], font(7.5), MUTED, anchor="rm")
+            put(d, (text_x, cy - 2 + j * 12), line, f, INK)
+        put(d, (x1 - 10, cy + 8), s["source"], font(8.5), MUTED, anchor="rm")
 
 
 # ---------------------------------------------------------------------------
@@ -544,7 +611,7 @@ def build(out="entry.png"):
     put(d, (1012, BAR_H / 2), f"{len(STORIES)} STORIES · {len(REGIONS)} REGIONS",
         font(9, True), "#FFFFFF", anchor="rm")
     put(d, (512, TITLE_Y), "Sunday 22 November 2026",
-        font(52, True, True), INK, anchor="mm")
+        font(44, True, True), INK, anchor="mm")
     put(d, (512, DECK_Y),
         "COP31 ends in collapse · Iran strikes tankers · Russian drone hits flats near Kyiv",
         font(13, False, True), MUTED, anchor="mm")
@@ -562,7 +629,7 @@ def build(out="entry.png"):
         sx = 12 + i * sw
         d.line([sx, STAT_LINE_TOP, sx, STAT_LINE_BOT], fill=rgb(LINE), width=1)
         put(d, (sx + 71, STAT_BIG_Y), big, font(26, True, True), RED, anchor="mm")
-        put(d, (sx + 71, STAT_SMALL_Y), small, font(8), INK, anchor="mm")
+        put(d, (sx + 71, STAT_SMALL_Y), small, font(9), INK, anchor="mm")
 
     counts = {r: sum(1 for s in STORIES if s["region"] == r) for r in REGIONS}
     for i, r in enumerate(REGIONS):
@@ -574,35 +641,35 @@ def build(out="entry.png"):
     for i, s in enumerate([x for x in STORIES if x["size"] == "main"][:3]):
         x, y = 12 + i * 336, MAIN_Y
         d.rectangle([x, y, x + 326, y + MAIN_H], fill=rgb(CARD), outline=rgb(LINE))
-        scene(d, (x + 3, y + 3, x + 323, y + 68), s)
-        d.rectangle([x + 3, y + 70, x + 323, y + 84],
+        scene(d, (x + 3, y + 3, x + 323, y + 53), s)
+        d.rectangle([x + 3, y + 55, x + 323, y + 69],
                     fill=rgb(REGION_COLORS[s["region"]]))
-        square_badge(d, x + 7, y + 70, x + 21, y + 84, s["n"],
+        square_badge(d, x + 7, y + 55, x + 21, y + 69, s["n"],
                      REGION_COLORS[s["region"]])
-        put(d, (x + 26, y + 79), s["kicker"], font(9, True), "#FFFFFF", anchor="lm")
-        put(d, (x + 315, y + 79), s["source"], font(8), "#FFFFFF", anchor="rm")
-        head = font(15, True, True)
+        put(d, (x + 26, y + 64), s["kicker"], font(10, True), "#FFFFFF", anchor="lm")
+        put(d, (x + 315, y + 64), s["source"], font(8), "#FFFFFF", anchor="rm")
+        head = font(17, True, True)
         for j, line in enumerate(wrap(s["headline"], head, 326 - 14, d)[:2]):
-            put(d, (x + 7, y + 88 + j * 17), line, head, INK)
-        for j, line in enumerate(wrap(s["body"], font(9), 300, d)[:7]):
-            put(d, (x + 7, y + 122 + j * 9), line, font(9), INK)
+            put(d, (x + 7, y + 73 + j * 19), line, head, INK)
+        for j, line in enumerate(wrap(s["body"], font(10), 300, d)[:7]):
+            put(d, (x + 7, y + 112 + j * 10), line, font(10), INK)
 
     for i, s in enumerate([x for x in STORIES if x["size"] == "small"][:8]):
         row, col = divmod(i, 4)
         x, y = 12 + col * 252, SMALL_Y0 + row * SMALL_STEP
         d.rectangle([x, y, x + 244, y + SMALL_H], fill=rgb(CARD), outline=rgb(LINE))
-        scene(d, (x + 3, y + 4, x + 241, y + 54), s)
-        d.rectangle([x + 3, y + 56, x + 241, y + 70],
+        scene(d, (x + 3, y + 4, x + 241, y + 44), s)
+        d.rectangle([x + 3, y + 46, x + 241, y + 60],
                     fill=rgb(REGION_COLORS[s["region"]]))
-        square_badge(d, x + 7, y + 56, x + 21, y + 70, s["n"],
+        square_badge(d, x + 7, y + 46, x + 21, y + 60, s["n"],
                      REGION_COLORS[s["region"]])
-        put(d, (x + 26, y + 63), s["kicker"], font(8, True), "#FFFFFF", anchor="lm")
-        put(d, (x + 235, y + 63), s["source"], font(8), "#FFFFFF", anchor="rm")
-        head = font(10, True, True)
+        put(d, (x + 26, y + 53), s["kicker"], font(9, True), "#FFFFFF", anchor="lm")
+        put(d, (x + 235, y + 53), s["source"], font(8), "#FFFFFF", anchor="rm")
+        head = font(12, True, True)
         for j, line in enumerate(wrap(s["headline"], head, 244 - 12, d)[:2]):
-            put(d, (x + 6, y + 74 + j * 10), line, head, INK)
-        for j, line in enumerate(wrap(s["body"], font(7.5), 232, d)[:5]):
-            put(d, (x + 6, y + 94 + j * 9), line, font(7.5), INK)
+            put(d, (x + 6, y + 64 + j * 12), line, head, INK)
+        for j, line in enumerate(wrap(s["body"], font(9), 232, d)[:4]):
+            put(d, (x + 6, y + 88 + j * 10), line, font(9), INK)
 
     d.rounded_rectangle([12, PANEL_Y0, 1012, PANEL_Y1], radius=4,
                         fill=rgb(PANEL), outline=rgb(LINE), width=1)
@@ -628,9 +695,9 @@ def build(out="entry.png"):
     put(d, (43, 994), "CHECK", font(7, True), "#FFFFFF", anchor="mm")
     put(d, (76, 978),
         "Every story happened, or was first reported, on Sunday 22 November 2026.",
-        font(9), INK)
-    put(d, (76, 990), DATE_CHECK, font(9), INK)
-    put(d, (1012, 1011), SOURCES_LINE, font(9), INK, anchor="rm")
+        font(10), INK)
+    put(d, (76, 990), DATE_CHECK, font(10), INK)
+    put(d, (1012, 1011), SOURCES_LINE, font(10), INK, anchor="rm")
 
     im.save(out, "PNG", optimize=True)
     return out
