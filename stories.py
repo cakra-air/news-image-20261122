@@ -19,9 +19,9 @@ DAY = "2026-11-22"
 
 STORIES = [
     # ---- 3 lead stories ----------------------------------------------------
-    dict(n=1, region="World", place="ANTALYA, TÜRKIYE", lat=36.90, lon=30.71,
+    dict(n=1, region="World", place="COP31: FINAL TEXT", lat=36.90, lon=30.71,
          kicker="COP31 · FOSSIL DEAL REJECTED", headline="COP31 ends with no climate deal",
-         body="EU and island states rejected the final draft after 44 hours of overtime in Antalya. The cover text never named fossil fuels, the main driver of global warming, and dropped a proposed $120bn adaptation target. Ireland's Darragh O'Brien said the bloc could not endorse a text that does not meet the moment. The Marshall Islands, Panama, Vanuatu and Belize also refused. UN rules require consensus, so the deal was not adopted and talks will reconvene later.",
+         body="EU and island states rejected the draft after 44 hours of overtime in Antalya. The cover text never named fossil fuels, the main driver of warming, and dropped a $120bn adaptation target. Ireland's Darragh O'Brien said the bloc could not endorse a deal that does not meet the moment. The Marshall Islands, Panama, Vanuatu and Belize also refused; Kathy Jetnil-Kijiner said they would not compromise their future for fossil fuel interests. Saudi Arabia argued states need flexibility on how they cut emissions. UN rules require consensus, so the text was not adopted.",
          source="Reuters / RFI", status="CONFIRMED", size="main", scene="cop",
          brief="Antalya: COP31 collapses as EU rejects fossil-free draft"),
 
@@ -31,18 +31,18 @@ STORIES = [
          source="AP / Al Jazeera", status="CONFIRMED", size="main", scene="hormuz",
          brief="Hormuz: Iran hits 3 tankers, vows to break US blockade"),
 
-    dict(n=3, region="Europe", place="DYMER, KYIV REGION", lat=50.75, lon=30.50,
-         kicker="RUSSIAN DRONE · 14 MISSING", headline="Drone strike collapses apartment block",
-         body="A Russian drone hit a five-storey block in Dymer, north of Kyiv, killing one person and leaving 14 missing, including two children. Nine residents were evacuated and rescuers dug through the rubble as Zelensky pressed Washington again for delayed Patriot missiles. Russia fired 186 drones overnight and a nearby city moved schools online.",
-         source="Politico / AP", status="CONFIRMED", size="main", scene="dymer",
-         brief="Dymer: 14 missing after drone hits apartment block"),
+    dict(n=3, region="Europe", place="KYIV, UKRAINE", lat=50.45, lon=30.52,
+         kicker="WAR · 186 DRONES", headline="Russia fires 186 drones at Ukraine",
+         body="Russia fired 186 drones and missiles at Ukraine overnight, the air force said. Defences shot down or jammed 161 of them, but hits were recorded at 18 locations. In Dymer, north of Kyiv, a residential block was damaged and 14 people were reported missing, including two children. Nine residents were evacuated and rescuers dug through the rubble. A nearby city moved schools online for the week. Zelensky again urged Washington to release delayed Patriot missiles, saying Russia used some 2,700 drones and 1,460 glide bombs in a single week.",
+         source="Air Force / Reuters", status="CONFIRMED", size="main", scene="drones",
+         brief="Ukraine: 186 Russian drones fired overnight, 161 downed"),
 
     # ---- 8 illustrated stories ---------------------------------------------
-    dict(n=4, region="Europe", place="GULF OF FINLAND", lat=59.80, lon=26.50,
-         kicker="DRONE HITS RUSSIAN SHIP", headline="Cargo ship struck off Finland",
-         body="The blast on the Russian cargo ship raises fears that the war is spreading into the Baltic. Finland is investigating the drone strike in the Gulf of Finland near its coast, and shipping traffic in the area is being monitored.",
-         source="Reuters / SBS", status="REPORTED", size="small", scene="shipdrone",
-         brief="Finland: Russian cargo ship hit by drones off the coast"),
+    dict(n=4, region="Middle East", place="MANAMA, BAHRAIN", lat=26.23, lon=50.58,
+         kicker="CLAIM VS DENIAL", headline="Iran says it hit US radars in Bahrain",
+         body="The IRGC claimed two radar sites were destroyed; Bahrain's interior ministry said facilities were unharmed and a fire at a civil site was put out. No injuries were reported.",
+         source="IRGC / Bahrain MoI", status="CLAIM", size="small", scene="radar",
+         brief="Bahrain: Iran claims radar strikes, government denies damage"),
 
     dict(n=5, region="Europe", place="POLAND", lat=52.20, lon=21.00,
          kicker="MISSILE + DRONE IN POLAND", headline="Missile and drone hit Poland",
@@ -56,11 +56,11 @@ STORIES = [
          source="CBS / Yahoo", status="REPORTED", size="small", scene="westbank",
          brief="West Bank: four villages targeted in suspected settler attacks"),
 
-    dict(n=7, region="Africa", place="BENGHAZI, LIBYA", lat=32.12, lon=20.07,
-         kicker="DRONE BLAST ON RUSSIAN SHIP", headline="Blast rocks Russian ship at Benghazi",
-         body="Libya's eastern government says a drone caused the explosion on a Russian ship at Benghazi naval base. No casualties were reported at the port, and the cause of the strike remains under investigation.",
-         source="BBC / DDCN", status="REPORTED", size="small", scene="benghazi",
-         brief="Benghazi: explosion on Russian ship blamed on drone"),
+    dict(n=7, region="Asia", place="SERANG, INDONESIA", lat=-6.12, lon=106.13,
+         kicker="FACTORY FIRE", headline="Candy factory fire kills three",
+         body="The blaze tore through the facility late Saturday; at least three people were killed and others remain missing as search teams work the site.",
+         source="Detik / AFP", status="REPORTED", size="small", scene="factory",
+         brief="Indonesia: candy factory fire kills three, others missing"),
 
     dict(n=8, region="Americas", place="SEATTLE, USA", lat=47.45, lon=-122.31,
          kicker="ICE ARRESTS AT SEA-TAC", headline="Agents arrest pair on airport jetway",

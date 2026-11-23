@@ -265,6 +265,12 @@ def scene(d, box, s):
             bx((0, i / steps), (1, (i + 1) / steps),
                fill=mix(top, bottom, i / (steps - 1)))
 
+    def puff(fx, fy, r, fill):
+        for ox, oy, sc in ((-0.8, 0.15, 0.6), (-0.35, -0.25, 0.85),
+                           (0.2, -0.1, 0.9), (0.7, 0.2, 0.65)):
+            el((fx + ox * r - sc * r, fy + oy * r - sc * r),
+               (fx + ox * r + sc * r, fy + oy * r + sc * r), fill=fill)
+
     if k == "cop":
         grad("#26354A", "#43536B")
         bx((0.05, 0.62), (0.74, 0.76), fill="#7A6146", outline="#4A3A28")
@@ -279,8 +285,8 @@ def scene(d, box, s):
         bx((0.76, 0.12), (0.97, 0.68), fill="#FFFDF5", outline=rgb(LINE))
         for j in range(4):
             ln((0.79, 0.20 + j * 0.06), (0.94, 0.20 + j * 0.06), "#9B9B9B", 1)
-        bx((0.76, 0.44), (0.97, 0.60), fill=rgb(RED))
-        put(d, P(0.865, 0.48), "NO DEAL", font(7, True), "#FFFFFF", anchor="mm")
+        bx((0.76, 0.50), (0.97, 0.66), fill=rgb(RED))
+        put(d, P(0.865, 0.54), "NO DEAL", font(7, True), "#FFFFFF", anchor="mm")
 
     elif k == "hormuz":
         grad("#1E3046", "#5C7185")
@@ -381,37 +387,42 @@ def scene(d, box, s):
 
     elif k == "ice":
         grad("#DCE5EC", "#F3EFE3")
-        # aircraft door at the right, jetway tube in the middle
-        d.rounded_rectangle([P(0.64, 0.28), P(1.02, 0.78)], radius=8,
+        # open aircraft door at the right
+        d.rounded_rectangle([P(0.66, 0.26), P(1.02, 0.80)], radius=9,
                             fill="#D2DCE4", outline="#8493A0")
-        bx((0.70, 0.34), (0.74, 0.42), fill="#9AA9B5")
-        bx((0.10, 0.42), (0.68, 0.60), fill="#BCC9C0", outline="#6F7F75")
-        bx((0.12, 0.60), (0.66, 0.64), fill="#8E9E94")
-        # two detainees in yellow vests, hands linked by cuffs
-        for fx in (0.28, 0.40):
+        bx((0.70, 0.32), (0.76, 0.56), fill="#9AA9B5", outline="#5E6E7A")
+        bx((0.80, 0.34), (0.95, 0.40), fill="#9AA9B5")
+        # jetway tube leading to the door
+        bx((0.08, 0.42), (0.70, 0.60), fill="#BCC9C0", outline="#6F7F75")
+        bx((0.10, 0.60), (0.68, 0.64), fill="#8E9E94")
+        # two detainees, wrists cuffed behind their backs
+        for fx in (0.26, 0.38):
             px, py = P(fx, 0.90)
-            detail_figure(d, px, py, 26, "#E8B84B")
-        d.line([P(0.31, 0.74), P(0.37, 0.74)], fill=rgb(RED), width=2)
-        # uniformed agent with badge
+            detail_figure(d, px, py, 27, "#E8B84B")
+        d.line([P(0.29, 0.73), P(0.35, 0.73)], fill=rgb(RED), width=3)
+        for fx in (0.29, 0.35):
+            ax, ay = P(fx, 0.73)
+            d.ellipse([ax - 2, ay - 2, ax + 2, ay + 2],
+                      outline=rgb(RED), width=1)
+        # uniformed agent with ICE lettering
         px, py = P(0.58, 0.92)
-        detail_figure(d, px, py, 30, "#2E3A46")
-        d.ellipse([P(0.585, 0.72), P(0.60, 0.75)], fill="#E8C25A")
+        detail_figure(d, px, py, 31, "#2E3A46")
+        put(d, (px - 6, py - 20), "ICE", font(6, True), "#FFFFFF")
 
     elif k == "tariff":
-        grad("#DCE5EC", "#F3EFE3")
-        # falling tariff bars with a red downward arrow
-        for i, h in enumerate((0.34, 0.27, 0.20, 0.13)):
-            fx = 0.06 + i * 0.15
-            bx((fx, 0.74 - h), (fx + 0.11, 0.74),
-               fill=("#6E7E8C", "#7E8E9A", "#93A2AD", "#A9B6C0")[i],
-               outline="#4C5A66")
-        d.line([P(0.08, 0.28), P(0.60, 0.52)], fill=rgb(RED), width=3)
-        d.polygon([P(0.60, 0.52), P(0.54, 0.47), P(0.55, 0.56)], fill=rgb(RED))
-        # crates moving between the two countries
-        bx((0.68, 0.48), (0.80, 0.70), fill="#A8703C", outline="#6A4A2A")
-        bx((0.83, 0.54), (0.95, 0.70), fill="#C48A2E", outline="#6A4A2A")
-        ln((0.70, 0.54), (0.78, 0.54), "#6A4A2A", 1)
-        ln((0.85, 0.60), (0.93, 0.60), "#6A4A2A", 1)
+        grad("#1C3048", "#3E5069")
+        # designed for the wide, short box: high tariff bar -> low tariff bar
+        put(d, (x0 + 8, y0 + 16), "TARIFF", font(9, True), "#F2C14E")
+        d.rectangle([x0 + 40, y0 + 20, x0 + 80, y0 + 44],
+                    fill="#7E8E9A", outline="#4A5864")
+        put(d, (x0 + 48, y0 + 25), "HIGH", font(7, True), "#FFFFFF")
+        d.rectangle([x0 + 150, y0 + 34, x0 + 190, y0 + 44],
+                    fill="#9FB0BC", outline="#4A5864")
+        put(d, (x0 + 157, y0 + 36), "LOW", font(6, True), "#1C3048")
+        d.line([x0 + 82, y0 + 23, x0 + 148, y0 + 37],
+               fill=rgb(RED), width=4)
+        d.polygon([(x0 + 152, y0 + 38), (x0 + 142, y0 + 32), (x0 + 145, y0 + 43)],
+                  fill=rgb(RED))
 
     elif k == "f1":
         grad("#121A2A", "#3A2C4E")
@@ -444,10 +455,90 @@ def scene(d, box, s):
             detail_figure(d, px, py, 30,
                           "#2E3A46" if i == 0 else "#4A5A6E")
 
+    elif k == "drones":
+        grad("#101A2E", "#2E3E58")
+        # city skyline with lit windows
+        for i in range(12):
+            fx = i / 12
+            bx((fx, 0.58 + (i % 3) * 0.05), (fx + 0.075, 0.96), fill="#1C2940")
+            for wy in (0.66, 0.78, 0.90):
+                bx((fx + 0.02, wy), (fx + 0.045, wy + 0.03), fill="#E8C25A")
+        # swarm of incoming drones with light trails
+        for i in range(18):
+            fx = 0.04 + (i % 9) * 0.105
+            fy = 0.10 + (i // 9) * 0.13
+            ax, ay = P(fx, fy)
+            d.ellipse([ax - 1.5, ay - 1.5, ax + 1.5, ay + 1.5], fill="#F2C14E")
+            d.line([ax - 7, ay + 4, ax, ay], fill="#7E8FA6", width=1)
+        for fx, fy in ((0.28, 0.62), (0.58, 0.70), (0.82, 0.56)):
+            ax, ay = P(fx, fy)
+            burst(d, ax, ay, 5)
+        put(d, P(0.88, 0.08), "186", font(14, True), "#FFFFFF")
+
+    elif k == "radar":
+        grad("#1C3048", "#4A6276")
+        # the illustration itself states the disputed object and both sides
+        put(d, ((x0 + x1) / 2 - d.textlength("US RADARS", font=font(8, True)) / 2,
+                y0 + 15), "US RADARS", font(8, True), "#FFFFFF")
+        # proper parabolic radar dishes: dish, feed horn, mast and base
+        for fx, struck in ((0.28, True), (0.74, False)):
+            lx, ly = P(fx - 0.10, 0.40)
+            rx, ry = P(fx + 0.10, 0.72)
+            d.pieslice([lx, ly, rx, ry], 200, 340,
+                       fill="#D5DEE5", outline="#8493A0")
+            # feed horn in front of the dish
+            hx, hy = P(fx, 0.44)
+            d.line([P(fx, 0.58), (hx, hy)], fill="#8493A0", width=1)
+            d.ellipse([hx - 2, hy - 2, hx + 2, hy + 2], fill="#6C7A86")
+            # mast and footing
+            d.line([P(fx, 0.66), P(fx, 0.92)], fill="#9BABB6", width=2)
+            bx((fx - 0.055, 0.90), (fx + 0.055, 0.96), fill="#6C7A86")
+            if struck:
+                d.line([P(fx - 0.07, 0.44), P(fx + 0.07, 0.68)],
+                       fill=rgb(RED), width=2)
+                d.line([P(fx + 0.07, 0.44), P(fx - 0.07, 0.68)],
+                       fill=rgb(RED), width=2)
+            else:
+                d.line([P(fx - 0.04, 0.70), P(fx, 0.75), P(fx + 0.07, 0.62)],
+                       fill="#3EB650", width=3)
+        # plain readable text, no badge blocks
+        put(d, (x0 + 7, y0 + 37), "IRAN: 2 HIT", font(8, True), "#FF9A8A")
+        put(d, (x0 + bw / 2 + 5, y0 + 37), "BAHR: NONE", font(8, True), "#8DE89B")
+
+    elif k == "factory":
+        grad("#3A2E2A", "#6B5A4A")
+        poly([(0.10, 0.46), (0.90, 0.46), (0.90, 0.86), (0.10, 0.86)],
+             fill="#7C8A90", outline="#3A4248")
+        bx((0.20, 0.22), (0.28, 0.46), fill="#8A99A4")
+        bx((0.56, 0.16), (0.64, 0.46), fill="#8A99A4")
+        poly([(0.34, 0.46), (0.39, 0.26), (0.47, 0.46)], fill="#E26B1D")
+        poly([(0.60, 0.46), (0.65, 0.28), (0.72, 0.46)], fill="#F2A03D")
+        puff(0.42, 0.20, 0.09, "#9A9A96")
+        puff(0.66, 0.14, 0.08, "#9A9A96")
+        px, py = P(0.82, 0.92)
+        detail_figure(d, px, py, 22, "#B5342E", helmet="#F2C14E")
+
     else:
         el((0.34, 0.30), (0.66, 0.62), outline=col, width=2)
 
     tag(d, x0 + 5, y0 + 4, s["place"], "#181818", 8)
+    times = {
+        "cop": "22 NOV 2026",
+        "hormuz": "22 NOV 2026",
+        "drones": "00:30 LOCAL · 22 NOV",
+        "radar": "22 NOV 2026",
+        "poland": "22 NOV 2026",
+        "westbank": "OVERNIGHT · 22 NOV",
+        "factory": "22 NOV 2026",
+        "ice": "08:00 LOCAL · 22 NOV",
+        "tariff": "22 NOV 2026",
+        "f1": "SAT NIGHT · 22 NOV",
+        "flags_jp_in": "22 NOV 2026",
+    }
+    tt = times.get(k, "22 NOV 2026")
+    tf = font(7, True)
+    tw = d.textlength(tt, font=tf)
+    tag(d, x1 - 9 - tw, y0 + 4, tt, "#181818", 8)
 
 
 
@@ -605,13 +696,13 @@ def build(out="entry.png"):
 
     d.rectangle([0, 0, 1024, BAR_H], fill=rgb(RED))
     put(d, (12, BAR_H / 2), "THE WORLD IN ONE DAY",
-        font(9, True), "#FFFFFF", anchor="lm")
+        font(10.5, True), "#FFFFFF", anchor="lm")
     put(d, (512, BAR_H / 2), "SUNDAY 22 NOV 2026 · WEEK 47 · Q4 · UTC",
-        font(9, True), "#FFFFFF", anchor="mm")
+        font(10.5, True), "#FFFFFF", anchor="mm")
     put(d, (1012, BAR_H / 2), f"{len(STORIES)} STORIES · {len(REGIONS)} REGIONS",
-        font(9, True), "#FFFFFF", anchor="rm")
+        font(10.5, True), "#FFFFFF", anchor="rm")
     put(d, (512, TITLE_Y), "Sunday 22 November 2026",
-        font(44, True, True), INK, anchor="mm")
+        font(45, True, True), INK, anchor="mm")
     put(d, (512, DECK_Y),
         "COP31 ends in collapse · Iran strikes tankers · Russian drone hits flats near Kyiv",
         font(13, False, True), MUTED, anchor="mm")
@@ -628,7 +719,7 @@ def build(out="entry.png"):
     for i, (big, small) in enumerate(stats):
         sx = 12 + i * sw
         d.line([sx, STAT_LINE_TOP, sx, STAT_LINE_BOT], fill=rgb(LINE), width=1)
-        put(d, (sx + 71, STAT_BIG_Y), big, font(26, True, True), RED, anchor="mm")
+        put(d, (sx + 71, STAT_BIG_Y), big, font(24, True, True), RED, anchor="mm")
         put(d, (sx + 71, STAT_SMALL_Y), small, font(9), INK, anchor="mm")
 
     counts = {r: sum(1 for s in STORIES if s["region"] == r) for r in REGIONS}
@@ -648,28 +739,34 @@ def build(out="entry.png"):
                      REGION_COLORS[s["region"]])
         put(d, (x + 26, y + 64), s["kicker"], font(10, True), "#FFFFFF", anchor="lm")
         put(d, (x + 315, y + 64), s["source"], font(8), "#FFFFFF", anchor="rm")
-        head = font(17, True, True)
-        for j, line in enumerate(wrap(s["headline"], head, 326 - 14, d)[:2]):
+        head = font(15, True, True)
+        hlines = wrap(s["headline"], head, 326 - 14, d)[:2]
+        for j, line in enumerate(hlines):
             put(d, (x + 7, y + 73 + j * 19), line, head, INK)
-        for j, line in enumerate(wrap(s["body"], font(10), 300, d)[:7]):
-            put(d, (x + 7, y + 112 + j * 10), line, font(10), INK)
+        body_y = 73 + (len(hlines) - 1) * 19 + 18
+        max_lines = max(2, int((188 - body_y - 12) / 10) + 1)
+        for j, line in enumerate(wrap(s["body"], font(10), 300, d)[:max_lines]):
+            put(d, (x + 7, y + body_y + j * 10), line, font(10), INK)
 
     for i, s in enumerate([x for x in STORIES if x["size"] == "small"][:8]):
         row, col = divmod(i, 4)
         x, y = 12 + col * 252, SMALL_Y0 + row * SMALL_STEP
         d.rectangle([x, y, x + 244, y + SMALL_H], fill=rgb(CARD), outline=rgb(LINE))
-        scene(d, (x + 3, y + 4, x + 241, y + 44), s)
-        d.rectangle([x + 3, y + 46, x + 241, y + 60],
+        scene(d, (x + 3, y + 4, x + 241, y + 54), s)
+        d.rectangle([x + 3, y + 56, x + 241, y + 70],
                     fill=rgb(REGION_COLORS[s["region"]]))
-        square_badge(d, x + 7, y + 46, x + 21, y + 60, s["n"],
+        square_badge(d, x + 7, y + 56, x + 21, y + 70, s["n"],
                      REGION_COLORS[s["region"]])
-        put(d, (x + 26, y + 53), s["kicker"], font(9, True), "#FFFFFF", anchor="lm")
-        put(d, (x + 235, y + 53), s["source"], font(8), "#FFFFFF", anchor="rm")
+        put(d, (x + 26, y + 63), s["kicker"], font(10, True), "#FFFFFF", anchor="lm")
+        put(d, (x + 235, y + 63), s["source"], font(8), "#FFFFFF", anchor="rm")
         head = font(12, True, True)
-        for j, line in enumerate(wrap(s["headline"], head, 244 - 12, d)[:2]):
-            put(d, (x + 6, y + 64 + j * 12), line, head, INK)
-        for j, line in enumerate(wrap(s["body"], font(9), 232, d)[:4]):
-            put(d, (x + 6, y + 88 + j * 10), line, font(9), INK)
+        hlines = wrap(s["headline"], head, 244 - 12, d)[:2]
+        for j, line in enumerate(hlines):
+            put(d, (x + 6, y + 74 + j * 12), line, head, INK)
+        sby = 74 + (len(hlines) - 1) * 12 + 14
+        smax = max(2, int((140 - sby - 12) / 10) + 1)
+        for j, line in enumerate(wrap(s["body"], font(10), 232, d)[:smax]):
+            put(d, (x + 6, y + sby + j * 10), line, font(10), INK)
 
     d.rounded_rectangle([12, PANEL_Y0, 1012, PANEL_Y1], radius=4,
                         fill=rgb(PANEL), outline=rgb(LINE), width=1)
